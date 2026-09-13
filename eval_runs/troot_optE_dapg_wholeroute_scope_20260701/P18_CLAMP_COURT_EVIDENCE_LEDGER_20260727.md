@@ -47576,3 +47576,16 @@ ALT-1 (downgrade) — not chosen (the human's word). ALT-2 (`agent prompt`) — 
 </details>
 
 **Banked — 時刻は本節 commit の author date が正。**
+
+## §1456 — ✅ **D7 = 再建 tool（凍結 `b4944c19…`・`44e0f9a2d1`）による最初の実 message **m-p18-327 → w2:p6 PLAN-KEEPER = DELIVERED**（via Enter・`landed_as = [Pasted text #1 +5 lines]` = 6 行 text で K+1 成立・status idle→idle at keypress・send_rc 0 / keypress_rc 0・sent 11:46:53.810 → Enter 11:46:54.096 → first_seen 11:46:55.155 JST・宛先 transcript `:25908` = `type=user`・`promptSource=typed`・head 一致）— **hub の tool 送信が herdr 0.9.0 で復旧**（by-hand は再び退役・§1454 の 1 回限りは Rs1 の語で閉じた形）。row/body/floor（327）を本節と同 turn で commit**（当卓 2026-09-13 11:47:47 JST 実測）
+
+**契機** = task A の DoD D7（§1455）。⛔ **実行 0**（sim/run なし）。**送信 1・Enter 1**。
+
+- **row（`sent_records.jsonl` 7 行目・逐語）**: `{"id": "m-p18-327", "body_sha256": "a1501074d1398c4b71fe37c75da6d9b28759fce7a2774b5e8a02004a83a48347", "head": "MSG m-p18-327 / w2:p18 / OPS-SUPERVISOR → w2:p6 PLAN-KEEPER", "to": "PLAN-KEEPER", "to_requested": "PLAN-KEEPER", "cc": [], "to_pane": "", "resolved_by": "label", "hub_session_id": "1c3d805c-2a9a-4b6d-bba2-ae7d479862e7", "child_session": "1", "herdr_version": "herdr 0.9.0", "control": false, "queued_on_topic": false, "row_type": "send", "pane": "w2:p6", "role": "PLAN-KEEPER", "session_id": "2dbed74a-e29c-45a7-ad8a-5c5af235885b", "transcript_path": "/home/rlrk/.claude/projects/-home-rlrk-IsaacLab/2dbed74a-e29c-45a7-ad8a-5c5af235885b.jsonl", "pre_send_offset": 91526311, "via": "Enter", "state": "DELIVERED", "status": "idle", "sent_at": "2026-09-13T11:46:53.810+09:00", "composer_before_kind": "empty", "composer_before_sha256": "", "send_rc": 0, "landed_as": "[Pasted text #1 +5 lines]", "status_at_keypress": "idle", "keypress_rc": 0, "enter_at": "2026-09-13T11:46:54.096+09:00", "evidence": "user@91553314+0", "fused_with": [], "head_found": true, "delivered_at": "2026-09-13T02:46:54.555Z", "line": 25908, "first_seen_at": "2026-09-13T11:46:55.155+09:00"}`
+- **宛先 record（p6 transcript `2dbed74a…jsonl:25908`・当卓 sed 実読）**: `type=user promptSource=typed ts=2026-09-13T02:46:54.555Z origin=human head_ok=True len=1898`
+- **body** = `bodies/m-p18-327.txt`（sha256 `d99587ef56d266d5562b89d15edd04b8ce5daefae77b8aa7a0e949adbc4261a3`・1,822 B・4 行 → head＋footer で 6 行・fold 枝）。内容 = task A 着地の 3 行型（何をした／どこに在るか = `44e0f9a2d1`・`4507749ff1`・§1453–§1455／p6 に要るもの = node state.md に (i) 追加 step (ii) ③(c) 閉 (iii) DoD ③ = (a)(b)(c)(g) 閉・(d) OPEN・status IN_PROGRESS 維持、反映 commit を p18 経由で返信）。
+- **`verify --id m-p18-327`** → rc 0（final・印字なし = §1455 訂正のとおり）。p6 は受領後 working へ。
+- **task A の DoD**: D1–D6 = §1455／D7 = 本節／D8 = CONTROLS「Task A」節＋§1455 ⇒ **task A 完了**（node への反映は p6 の行為・その返信待ち）。**残る Rs1 待ち（不変）**: 未追認 2 file（CONTROLS・validate_staged_out）／提案（回帰 test file・分割・tool 内完了 keypress・手押し row 形・**新: 折返し head の受理（gate 拡張）・label 先頭 token = pane id の検査**）／制御 (h) の 2 文字／push（本日 4 commit 未 push: `44e0f9a2d1` `4507749ff1` 本節 …）／新 pane 4 卓の label／MEMORY.md 91.4%（09-12 起票の coordinated 圧縮）。
+- **p11 の第 2 信（pin）は未着**（p11 working・v1 は FAIL 印つき bank `c7884ce0ff`・v2 は別 commit と宣言）。到着時は tool で p4（cc p0/pZ）へ relay する。
+
+**Banked — 時刻は本節 commit の author date が正。**
