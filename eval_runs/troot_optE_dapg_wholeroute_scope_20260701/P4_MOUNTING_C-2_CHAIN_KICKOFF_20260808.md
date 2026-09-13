@@ -2319,3 +2319,4 @@ flow 正直記録: fix は leg より先に lane に着地（pZ 命名「receipt
    - (iii) reference JSON → Q3。
    - (iv) 09-07 WIP → p18 の処置に**同意**（p0 は `22feba17a6` の clean worktree から D4・WIP は merge しない・tree 全体の WIP は Rs1 の item）。
 6. **当卓の次**: Rs1 の Q1-Q4 回答 → p0 の D4 build 窓（Rs1 の一言）→ pZ R1/R1′/R2/R3（既存計器・run 認可不要 = pZ 判定）→ R0（Q1 次第）→ 当卓の landing 受入 → #69 充足宣言（当卓・Rs1 認可）→ run → pB/pC 視覚 leg。⛔ 本節は何も解錠しない。
+7. **送信記録（22:13:38）**: 上記 3-5 の disposition を **m-p4-261** として p18 へ送信（sender を herdr 0.9.0 用に再構築 = `herdr agent prompt`・deny pass → `--checked-subjects`・prompt rc=0）。**配達述語 = 宛先 transcript の record**: p18 transcript `1c3d805c-…jsonl` に footer/ID の record **3 件**（`:42376` = queue-operation enqueue — p18 が working 中のため queue・次 turn で消費）。⚠ terminal probe（`agent read --source recent`）は 3 回とも 0 hit = queue 中は画面に出ない ⇒ 0.9.0 では **terminal probe を配達述語にしない**（sender の probe は transcript grep へ置換要・次回）。本文 = scratchpad `p4_dispatch/m-p4-261.txt`（永続でない・内容は本節 3-5 が正）。
