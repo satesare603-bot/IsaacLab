@@ -3,6 +3,36 @@
 **Naming**: Rs1（人間）／Rs2（=p4/CC・RS-TECH-LEAD）。
 ⚠ **全数値・全 pin の正は repo の artifact**。本書は pointer。⛔ 本書を ground truth にしない（CLAUDE.md §運用4）。
 
+## 直近セッション: 2026-09-13（再開・UR15-B controller 設計 = cycle 2 FAIL 上限・v3 bank・REVIEW を p4 へ）
+
+### Context
+- **タスク**: m-p18-280 §3（08-10）= UR15-B controller の設計 court（受諾）→ 設計。Rs1 逐語「UR15-Bようのコントローラも作成」（kickoff `:2225-2231` @ `9e9f6199b3`・DDR #68 `:172` @ `358a1d72ad` 追裁定②）。
+- **Phase**: 設計 = **v3 bank 済・未検証**（5 体検証 cycle 1 FAIL・cycle 2 FAIL = skill 上限 2）。次の一手は当卓の外（p4/Rs1）。
+- **参照した SSOT**: LEDGER DDR #66/#68/#69/#70/#71 @ `358a1d72ad`／RS71 §0 `:22-29` @ `13a1331fc0`／brief @ `2887037c9f`／kickoff 09:51 節・09-13 節 @ `9e9f6199b3`／台帳 §1401/§1403/§1453/§1454 @ `6006eeb2a8`。
+
+### 完了（全 commit 済・pathspec・`--no-verify`・trailer A）
+1. **court word = ACCEPT 送達** 09-13 08:25:24 JST（`herdr agent prompt w2:p18 …`・p18 transcript `:41542`・§1453 VERIFIED・Rs1「手送りで届けて」→ §1454）。⚠ 08-10 の草稿は未送信のまま消え 34 日止めた（当卓の責・artifact なし）。
+2. **v1** = `c7884ce0ff`（FAIL 印・cycle 1 FAIL・pre-check BLOCK）。
+3. **v2** = `5f0c2526c9`（byte 同一 bank・blob `5a538a9445`・sha256 `cfe49d063c760de4…`）＋ **cycle-2 verdict §5**（同 commit・union CRITICAL 0・HIGH 9・MEDIUM 25・LOW 15 = 全受入・DECIDE FAIL・上限）。
+4. **v3** = `ddeab649c1`（union 反映・202 行・sha256 `2e0f59d8e6bd…`）＋ 層2 事後の追記（本 commit）。
+5. pre-check log 2 行追記（`logs/pre-check-log.jsonl`・gitignored: v1 BLOCK 08:44:02／v2 WARN 11:49:54）。
+
+### 設計の芯（v3・詳細 = file）
+- D1 identity（符号 map なし・reference の R 式 = 負の対照）／D2 AXFIX 側別測定（関係式 `AXFIX_R = diag(1,−1,1)·AXFIX_L·A`・AXFIX は hand asset を判別しない）／D3 menu 符号不変／**D4 = 唯一の code 変更 = 姿勢 cap 計器の側別化（gate-inert・print のみ）**／D5・D5′・D6 不変／D7 = R2 asset 級 text 等式 ＋ R4。
+- **B で実行された記録 2 本**（U0 = C-2・回転コピー hand／U1 = 0.22/45・鏡像 hand）は **chirality-blind**・**C-2 × 鏡像 hand は未測** = pZ R0（**Rs1 認可の計器 class**・認可されなければ R4 級へ格下げ）。
+
+### 未完了・他卓待ち
+- **REVIEW（p4）**: v3 を第 3 cycle なしで消費するか／第 3 cycle 認可か（v3 §15）。
+- **Rs1 の柵 2 件**（p4 経由）: R0 の計器 class／「作成」の問い（(A) identity＋D4＋§7 記録＋print 1 行／(B) 側別 controller 記録 1 行）。
+- **回付 4 件**: 監査の phantom `release_ctrl`（wired `:1614/:1814/:2849`・3 記録が引用・pB 注意）／acceptance `:214` 逆述語（owner p0・DDR 項目）／reference JSON（`~/Downloads/…` 不在・sha `20ac0935c707757c…`）の repo 内 copy 提案／09-07 WIP の処遇（p18）。
+- 08-09 からの open: (b)(d) ケーブル前提 cycle 1 FAIL ＋ Rs1 escalation（B1 却下の現効）未送信。
+
+### 型（次の自分に効く）
+- **HIGH は 3 回とも全て panel 発・自己検査 0**。特に「hand に掛けた代数」（擬ベクトルの符号・tilt の側輸送）は自分で numpy 1 本で追認できたのに書く前にしなかった。
+- 6 体並列を 2 度続けて出すと API session 上限（429）に当たる（11:0x）— 0 所見の起動は cycle に数えない。
+- 数値は file 自身の summary 行から・行番号は blob から（v2 の §7 は 08-10 tree の stale 行を写して −100）。
+
+
 ## 前セッション完了: 2026-08-09 20:04 JST（p11 / L3 五体検証 FAIL まで）
 
 ### Context
