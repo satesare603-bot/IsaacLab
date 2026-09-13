@@ -47589,3 +47589,14 @@ ALT-1 (downgrade) — not chosen (the human's word). ALT-2 (`agent prompt`) — 
 - **p11 の第 2 信（pin）は未着**（p11 working・v1 は FAIL 印つき bank `c7884ce0ff`・v2 は別 commit と宣言）。到着時は tool で p4（cc p0/pZ）へ relay する。
 
 **Banked — 時刻は本節 commit の author date が正。**
+
+## §1457 — ✅ **p6 `m-p6-155`（enqueue 11:51:09 JST・当卓 transcript `:42219` = `type=user`・`promptSource=typed`・origin human・ts 02:51:09.196Z・1,450 字 = **p6 の herdr 0.9.0 初送信**）を on-disk で検証: 反映 `3a2719f3da`（11:49:47・state.md +7/−6）＋訂正 `d68d0efd80`（11:50:24・+1/−1）は HEAD に実在・state.md `:9`（③ = (a)(b)(c)(g) 閉／(d) OPEN）`:75`（① に task A・`44e0f9a2d1`・凍結 sha）`:76`（② に m-p18-327 両側一致）`:77`（③(c) 閉 = §1455）`:79–:81`（旧 status 行の併記訂正＋09-13 DoD 行）・pin 4 種（`44e0f9a2d1`／`b4944c191dcc…`／`4507749ff1`／`9e9f6199b3`）は各 1 回 grep 一致 → **VERIFIED** ＋ 返信 **m-p18-328 → w2:p6 = DELIVERED**（via Enter・`[Pasted text #2 +5 lines]`・idle→idle・send_rc 0／keypress_rc 0・sent 11:52:22.904 → Enter 11:52:23.183 → first_seen 11:52:23.738・宛先 `:25998`）= 0.9.0 上の tool 実送信 2 件目・p6 の送信経路も両側で閉（readback を本 message で返した）**（当卓 2026-09-13 11:53:26 JST 実測）
+
+**契機** = p6 `m-p6-155`（re m-p18-327）。⛔ **実行 0**。**送信 1・Enter 1**。
+
+- **row（`sent_records.jsonl` 8 行目・逐語）**: `{"id": "m-p18-328", "body_sha256": "ac58d30dde03843989ae275827b13a4c1da57c64e747c1a61aea3a3c81e82076", "head": "MSG m-p18-328 / w2:p18 / OPS-SUPERVISOR → w2:p6 PLAN-KEEPER", "to": "PLAN-KEEPER", "to_requested": "PLAN-KEEPER", "cc": [], "to_pane": "", "resolved_by": "label", "hub_session_id": "1c3d805c-2a9a-4b6d-bba2-ae7d479862e7", "child_session": "1", "herdr_version": "herdr 0.9.0", "control": false, "queued_on_topic": false, "row_type": "send", "pane": "w2:p6", "role": "PLAN-KEEPER", "session_id": "2dbed74a-e29c-45a7-ad8a-5c5af235885b", "transcript_path": "/home/rlrk/.claude/projects/-home-rlrk-IsaacLab/2dbed74a-e29c-45a7-ad8a-5c5af235885b.jsonl", "pre_send_offset": 92236967, "via": "Enter", "state": "DELIVERED", "status": "idle", "sent_at": "2026-09-13T11:52:22.904+09:00", "composer_before_kind": "empty", "composer_before_sha256": "", "send_rc": 0, "landed_as": "[Pasted text #2 +5 lines]", "status_at_keypress": "idle", "keypress_rc": 0, "enter_at": "2026-09-13T11:52:23.183+09:00", "evidence": "user@92236967+0", "fused_with": [], "head_found": true, "delivered_at": "2026-09-13T02:52:23.205Z", "line": 25998, "first_seen_at": "2026-09-13T11:52:23.738+09:00"}`
+- **body** = `bodies/m-p18-328.txt`（sha256 `6459f5e168af4d9c7ece0dcb5b33273f09ab9e5be852759e73b7435cf32d180a`・1,333 B・4 行 → 6 行・fold 枝）。内容 = readback（`:42219` の fields）／2 commit と state.md 行の検証結果／要るもの なし・③(d) は実 traffic の HELD 待ち・COMPLETE は Rs1 の語・p11 の pin 未着。
+- **node の DoD 現況（p6 反映後・`3a2719f3da`）**: ① ✅（task A 含む）／② ✅／③ (a)(b)(c)(g) 閉・(d) OPEN／④ ✅ ⇒ status IN_PROGRESS（残 = ③(d) のみ）。
+- HEAD は `913811bbcf`（p11 の commit・11:5x）・未 push 8（当卓 5 = `44e0f9a2d1` `4507749ff1` `a2c7165bbe` 本節 …／p6 2／p11 1）。
+
+**Banked — 時刻は本節 commit の author date が正。**
