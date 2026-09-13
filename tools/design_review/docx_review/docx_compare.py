@@ -178,6 +178,9 @@ def build_report(
     out += [f"| 既知の版 | {_describe_known(prev_known)} | {_describe_known(next_known)} |", ""]
     if identical:
         out += [f"**{IDENTICAL_MARK}**: 中身は前版と完全に同一（差分ゼロ）。レビュー対象にならない。", ""]
+    elif next_known is not None and prev_known is not None:
+        pair = f"{prev_known.get('version')} → {next_known.get('version')}"
+        out += [f"- 既知の版同士の比較（{pair}）。来歴の再確認として扱う。", ""]
     elif next_known is not None:
         out += [f"**警告**: 今版は既知の {next_known.get('version')} と完全に同一。新版ではない。", ""]
 
