@@ -2588,3 +2588,324 @@ m-p18-305 (§1426): the P4_CLIP_DUMP diagnostic block, roster :1170-1171 and its
   line would therefore read the same five ids on both sides, and the contact-parameter rows would print for all five —
   stated as a prediction, not an observation: the branch runs only under `P4_CLIP_DUMP=1`, and executing it is pZ's
   static call, not this window's.
+
+## 8.50 ANNOUNCE-FIRST: D4 (the UR15-B controller's one code change) — candidate built and tested in a clean worktree, NOT landed; waits for p4's disposition of v3 and the window word
+
+*(2026-09-13 22:13 JST.  Rs1 = the human; Rs2 = p4/CC.  Design = p11's v3 `P11_UR15B_CONTROLLER_DESIGN_20260913.md` @ `913811bbcf`
+(sha256 `5a416a78099fb69b7355f412aab74c2cbe11d1e73df5d9387b1b67e9d31e88c0`, 202 lines, reproduced here), relayed as m-p18-329.
+This desk's part = §6 D4 and §13 "p0" — nothing else in v3 is p0's to build.)*
+
+### 1. What D4 is, read from v3 §6 (not from the relay)
+
+- `attitude_tilt_deg(t, yaw, roll)`: the reading for side `t` — `slot_centre(t) − pinch(t)`, `TOOLB[t]`, `AXFIX[t]` — where the
+  landed code read the LEFT hand for every attitude on both arms (`:1276-1277`, `:1283` @ `22feba17a6`).
+- `vertical_cap_deg()`: each side evaluated under the attitude it actually receives `(SIDES[t]·yaw, SIDES[t]·roll)`, both
+  calibration raises per side, `cap_t = min(tilted_t)` selected on the input, return `min_t cap_t`.
+- the print `:2987-2990`: prefix byte-compatible, `(L cap_L / R cap_R)` appended; no `nan|inf|error|fail|warn` substring in new words.
+- Invariant: `solve_ik` / `pose_menu` / `_rdes` / `aim_*` / `release_ctrl` / servo / `R_DES` / `GRASP_ATTITUDES` / `LIM` / `AXFIX` /
+  `SIDES`; 0 control lines; 1 file.  Gate-inert: the only consumer is the print (`vertical_tol_deg(` = 0 calls in the blob, v3 §5).
+- **Not in the candidate, by design:** the §7 identity print — Rs1's (A)/(B) answer is pending (v3 §1); the `_known` phantom
+  (`:1614`, D4 外); `ur15_mirror_acceptance.py:214` (owner p0, but a separate word — see §5 below); the reference JSON copy.
+
+### 2. How per-side caps reach the print without a third function
+
+v3 §13 (b) allows exactly {FunctionDef `attitude_tilt_deg`, FunctionDef `vertical_cap_deg`, Expr print}.  So the per-side value
+is exposed through an optional argument, `vertical_cap_deg(side=None)`: the existing call form `vertical_cap_deg()` still returns the
+min over both sides (§6-2's aggregate); `vertical_cap_deg("L")` / `("R")` return one side's cap.  The print calls all three (65 menu
+entries × arithmetic, no FK — cost is nil).  The three-way call means the two calibration raises run three times at start-up, on
+the same live state; a raise fires on the first call either way.
+
+### 3. The candidate — built from the pinned blob in a detached worktree, tested statically, run 0
+
+- Base = blob `75eefef4e27e` (= `git show 22feba17a6:…/ur15_steps_wired.py` = HEAD's blob, content sha256 `57de8c3ec7ed0262…`).
+  Worktree = `git worktree add --detach <scratchpad>/wt_d4 HEAD` (HEAD `cc42d3ca5c` at creation; `git status` clean = 0 lines).
+  ⛔ The shared tree's copy of this file is the 09-07 formatter WIP (+1387/−813, not mine, not merged) — every read and the
+  build were done on the blob, not on the working tree.
+- Applied by `apply_d4.py` (exact-anchor replacement; refuses on a non-unique anchor).  `git diff --numstat` = **+65 / −45**,
+  5 hunks, every hunk inside `:1263-1326` and `:2990` of the base; `py_compile` OK; no changed line over 120 chars.  The text
+  diff is larger than the AST diff because two ⛔ comment blocks moved four spaces right into the new per-side loop.
+- **DoD (b) predicate (v3 §13, verbatim rule set) implemented as `ast_pred.py` (§4.2 below) and run:**
+
+```
+=== leg A: base vs base (identity)                                           PASS
+=== leg B: base vs D4 candidate (must PASS)
+ALLOWED     stmt#141 base:1263 cand:1263 FunctionDef attitude_tilt_deg
+ALLOWED     stmt#142 base:1288 cand:1292 FunctionDef vertical_cap_deg
+ALLOWED     stmt#260 base:2987 cand:3005 Expr print [steps] vertical check
+PASS
+=== control 1: literal flip 0.05 -> 0.06 in solve_ik (must FAIL)
+NOT-ALLOWED stmt#173 base:2036 cand:2036 FunctionDef @line 2036
+FAIL
+=== control 3: candidate + stray edit of the identity print :567 (must FAIL)
+NOT-ALLOWED stmt#86 base:567 cand:567 Expr @line 567
+ALLOWED     stmt#141 … attitude_tilt_deg / ALLOWED stmt#142 … vertical_cap_deg / ALLOWED stmt#260 … Expr print
+FAIL
+=== control 4 (N3 self-check): base with one placeholder-free f-string de-f'd at :2771 (F541 shape; must PASS)   PASS
+```
+
+  (control 2 "mock-D4 → PASS" is leg B itself.)  The candidate differs from the base in exactly the three allowed statements and
+  nothing else; import name set unchanged.
+- **What is not verified here:** any number.  `cap_L`, `cap_R`, `v_c`'s sign — pZ's R3 (own re-derivation on a composed model,
+  wired executed 0×).  The candidate's arithmetic per side is the base's arithmetic with `"L"` → `t` and the menu pair signed by
+  `SIDES[t]`; that is a transport claim, and R3 is where it is measured.  Run 0 (no import of the driver anywhere in this section).
+
+### 4. Verbatim objects
+
+#### 4.1 `d4_candidate.diff` (base blob `75eefef4e27e` → candidate; sha256 `35ce2e3bdeff0dcd…`, 144 lines)
+
+```diff
+diff --git a/eval_runs/troot_optE_dapg_wholeroute_scope_20260701/p4_ur15_sim_20260727/ur15_steps_wired.py b/eval_runs/troot_optE_dapg_wholeroute_scope_20260701/p4_ur15_sim_20260727/ur15_steps_wired.py
+index 75eefef4e2..d2bc133e13 100644
+--- a/eval_runs/troot_optE_dapg_wholeroute_scope_20260701/p4_ur15_sim_20260727/ur15_steps_wired.py
++++ b/eval_runs/troot_optE_dapg_wholeroute_scope_20260701/p4_ur15_sim_20260727/ur15_steps_wired.py
+@@ -1260,8 +1260,12 @@ def _wrap(q):
+     return q
+ 
+ 
+-def attitude_tilt_deg(yaw, roll):
+-    """How far off straight down a jaw commanded to (yaw, roll) would point [deg].
++def attitude_tilt_deg(t, yaw, roll):
++    """How far off straight down side t's jaw, commanded to (yaw, roll), would point [deg].
++
++    D4 (P11_UR15B_CONTROLLER_DESIGN_20260913.md section 6): the reading is taken for the side asked
++    for -- its own pinch->mouth vector, tool body and AXFIX -- where it used to read the LEFT hand
++    for every attitude on both arms.
+ 
+     p11 -137: the cap has to be derived in the quantity the CHECK measures, not in the parameter
+     the menu is written in.  The menu is (yaw, roll) pairs, and whether a given yaw also tips the
+@@ -1273,57 +1277,71 @@ def attitude_tilt_deg(yaw, roll):
+     directly.  The pinch-to-mouth vector is read once in the tool's own frame from the model as it
+     stands, which is where it is constant.
+     """
+-    v = slot_centre("L") - pinch("L")
+-    v_tool = np.array(d.xmat[TOOLB["L"]]).reshape(3, 3).T @ v
++    v = slot_centre(t) - pinch(t)
++    v_tool = np.array(d.xmat[TOOLB[t]]).reshape(3, 3).T @ v
+     v_tool = v_tool / max(1e-12, float(np.linalg.norm(v_tool)))
+     # ⛔ NOT transposed.  The IK drives the tool until (RD @ AXFIX) @ Rt.T is the identity, so at
+     # the pose this attitude asks for, Rt IS RD @ AXFIX -- and a vector in the tool frame reaches
+     # world by that matrix, not by its inverse.  With the transpose the cap printed 0.00 degrees
+     # for every attitude in the menu, which is what sent me back to this line.
+-    world = (_rdes(yaw, roll) @ AXFIX["L"]) @ v_tool
++    world = (_rdes(yaw, roll) @ AXFIX[t]) @ v_tool
+     world = world / max(1e-12, float(np.linalg.norm(world)))
+     return math.degrees(math.acos(min(1.0, max(-1.0, float(-world[2])))))
+ 
+ 
+-def vertical_cap_deg():
+-    """The smallest non-zero tilt the attitude menu can produce, in degrees."""
+-    tilts = [attitude_tilt_deg(y, r) for y, r in _spec.GRASP_ATTITUDES]
+-    # ⛔ TWO checks, and the second is the one that matters -- p11 -144 caught that the first alone
+-    # passes the exact bug it was written for.  With the rotation inverted every attitude came out
+-    # flat, so the upright one came out flat too and the zero check was satisfied: a dead
+-    # instrument reproduces its zero perfectly.  A calibration needs both ends.
+-    #
+-    # Same shape as the pin's two readings, which is where this belongs: engagement is the zero,
+-    # a step later is the span.  Here the zero is the upright entry and the span is every entry
+-    # that asks for a tilt.  Neither says tilt must EQUAL roll -- the two differ by a couple of
+-    # degrees and should -- only that a non-zero input produces a non-zero output.
+-    upright = [attitude_tilt_deg(y, r) for y, r in _spec.GRASP_ATTITUDES if abs(r) < 1e-9]
+-    if upright and max(upright) > TILT_CAL_DEG:
+-        raise RuntimeError(
+-            f"the attitude with zero roll comes out {max(upright):.2f} deg off vertical, so this "
+-            f"is not turning attitudes into the tilt the check reads -- the cap it would produce "
+-            f"would be a number about the arithmetic, not about the cell")
+-    tilted = [attitude_tilt_deg(y, r) for y, r in _spec.GRASP_ATTITUDES if abs(r) >= 1e-9]
+-    if tilted and min(tilted) < TILT_CAL_DEG:
+-        raise RuntimeError(
+-            f"an attitude that asks for a tilt comes back {min(tilted):.2f} deg off vertical, "
+-            f"which is flat.  A construction that turns every attitude into the same answer is "
+-            f"not measuring attitude at all -- an inverted rotation, a scale of zero and a "
+-            f"collapsed sign all look like this, and the zero check cannot tell them apart "
+-            f"because they all reproduce the zero")
+-    # ⛔ The cap is min(tilted), NOT min over everything that came back non-zero.  Those are two
+-    # different sets and I had defined them two different ways inside one function: the
+-    # calibration selected by the INPUT (the attitude asked for a roll) and the cap selected by
+-    # the OUTPUT (the tilt came back above 1e-6).  The upright entries leak through the second
+-    # one on numerical noise -- a few thousandths of a degree -- so the cap came out 0.00 while
+-    # the calibration, looking at the other set, saw nothing wrong and stayed quiet.
+-    #
+-    # Which is the same failure as measuring the convenient quantity instead of the deciding one,
+-    # one level down: the cap is about attitudes that ASK for a tilt, so it selects on the ask.
+-    if not tilted:
+-        raise RuntimeError("no menu attitude asks for a tilt, so the vertical check has nothing "
+-                           "it could fail to distinguish and the cap is undefined")
+-    return min(tilted)
++def vertical_cap_deg(side=None):
++    """The smallest non-zero tilt the attitude menu can produce, in degrees.
++
++    D4: evaluated per side under the attitude that side actually receives, (SIDES[t]*yaw,
++    SIDES[t]*roll) -- the sign the solver applies to every menu entry -- with both calibration
++    checks run for each side.  `side=None` returns the min over both sides, which is the aggregate
++    the shared VERTICAL_TOL_DEG needs (the gate reads each side against it); `side="L"` / `"R"`
++    returns that side's own cap.  The two calibration raises below fired on 2026-08-02
++    (order_test_logs/order_L.txt:96, order_R.txt:96) for a cause the record does not carry; with
++    the per-side evaluation the same raise can now come from the right hand's reading as well --
++    an abort here is the instrument reading the live jaw, not a verdict on the controller.
++    """
++    caps = {}
++    for t in (list(SIDES) if side is None else [side]):
++        sgn = SIDES[t]
++        tilt_deg = lambda y, r: attitude_tilt_deg(t, sgn * y, sgn * r)  # noqa: E731
++        # ⛔ TWO checks, and the second is the one that matters -- p11 -144 caught that the first alone
++        # passes the exact bug it was written for.  With the rotation inverted every attitude came out
++        # flat, so the upright one came out flat too and the zero check was satisfied: a dead
++        # instrument reproduces its zero perfectly.  A calibration needs both ends.
++        #
++        # Same shape as the pin's two readings, which is where this belongs: engagement is the zero,
++        # a step later is the span.  Here the zero is the upright entry and the span is every entry
++        # that asks for a tilt.  Neither says tilt must EQUAL roll -- the two differ by a couple of
++        # degrees and should -- only that a non-zero input produces a non-zero output.
++        upright = [tilt_deg(y, r) for y, r in _spec.GRASP_ATTITUDES if abs(r) < 1e-9]
++        if upright and max(upright) > TILT_CAL_DEG:
++            raise RuntimeError(
++                f"{t}: the attitude with zero roll comes out {max(upright):.2f} deg off vertical, so this "
++                f"is not turning attitudes into the tilt the check reads -- the cap it would produce "
++                f"would be a number about the arithmetic, not about the cell")
++        tilted = [tilt_deg(y, r) for y, r in _spec.GRASP_ATTITUDES if abs(r) >= 1e-9]
++        if tilted and min(tilted) < TILT_CAL_DEG:
++            raise RuntimeError(
++                f"{t}: an attitude that asks for a tilt comes back {min(tilted):.2f} deg off vertical, "
++                f"which is flat.  A construction that turns every attitude into the same answer is "
++                f"not measuring attitude at all -- an inverted rotation, a scale of zero and a "
++                f"collapsed sign all look like this, and the zero check cannot tell them apart "
++                f"because they all reproduce the zero")
++        # ⛔ The cap is min(tilted), NOT min over everything that came back non-zero.  Those are two
++        # different sets and I had defined them two different ways inside one function: the
++        # calibration selected by the INPUT (the attitude asked for a roll) and the cap selected by
++        # the OUTPUT (the tilt came back above 1e-6).  The upright entries leak through the second
++        # one on numerical noise -- a few thousandths of a degree -- so the cap came out 0.00 while
++        # the calibration, looking at the other set, saw nothing wrong and stayed quiet.
++        #
++        # Which is the same failure as measuring the convenient quantity instead of the deciding one,
++        # one level down: the cap is about attitudes that ASK for a tilt, so it selects on the ask.
++        if not tilted:
++            raise RuntimeError("no menu attitude asks for a tilt, so the vertical check has nothing "
++                               "it could fail to distinguish and the cap is undefined")
++        caps[t] = min(tilted)
++    return min(caps.values())
+ 
+ 
+ def _rdes(yaw, roll=0.0):
+@@ -2987,7 +3005,9 @@ def live_write(img):
+ print(f"[steps] vertical check: allowance {VERTICAL_TOL_DEG:4.2f} deg, "
+       f"cap {vertical_cap_deg():4.2f} deg (the smallest non-zero tilt the attitude menu can make, "
+       f"measured as pinch->mouth against world -z, not as a roll); the allowance is an interim "
+-      f"until a run reports the worst residual an upright command actually leaves")
++      f"until a run reports the worst residual an upright command actually leaves"
++      f" (L {vertical_cap_deg('L'):4.2f} / R {vertical_cap_deg('R'):4.2f}, each side under the "
++      f"attitude it receives)")
+ 
+ _shared = arm_sets_disjoint()
+ print(f"[steps] arm geom sets: L={len(ARMG['L'])} R={len(ARMG['R'])}, "
+```
+
+#### 4.2 `ast_pred.py` (79 lines)
+
+```python
+"""DoD (b) predicate for D4 (P11_UR15B_CONTROLLER_DESIGN_20260913.md section 13 @ 913811bbcf), verbatim:
+base = the pinned blob; normalizations N1 (sort import aliases), N2 (merge adjacent Constants inside a
+JoinedStr), N3 (a JoinedStr with no FormattedValue is a Constant); imports compared as name sets, deletion
+not allowed; allowed differences = {FunctionDef attitude_tilt_deg, FunctionDef vertical_cap_deg,
+Expr print(...) whose leading Constant starts with "[steps] vertical check"}.  Prints every differing
+module-level statement with its class and ends with PASS or FAIL.  argv: base.py candidate.py"""
+import ast, sys
+
+ALLOWED_DEFS = {"attitude_tilt_deg", "vertical_cap_deg"}
+PRINT_PREFIX = "[steps] vertical check"
+
+
+class Norm(ast.NodeTransformer):
+    def visit_Import(self, n):            # N1
+        n.names = sorted(n.names, key=lambda a: (a.name, a.asname or ""))
+        return n
+    def visit_ImportFrom(self, n):        # N1
+        n.names = sorted(n.names, key=lambda a: (a.name, a.asname or ""))
+        return n
+    def visit_JoinedStr(self, n):         # N2 + N3
+        self.generic_visit(n)
+        vals = []
+        for v in n.values:
+            if isinstance(v, ast.Constant) and vals and isinstance(vals[-1], ast.Constant):
+                vals[-1] = ast.Constant(value=vals[-1].value + v.value)
+            else:
+                vals.append(v)
+        if all(isinstance(v, ast.Constant) for v in vals):
+            return ast.Constant(value="".join(v.value for v in vals))
+        n.values = vals
+        return n
+
+
+def stmts(path):
+    tree = Norm().visit(ast.parse(open(path).read()))
+    return [(s, ast.dump(s, include_attributes=False)) for s in tree.body]
+
+
+def import_names(body):
+    out = set()
+    for s, _ in body:
+        if isinstance(s, (ast.Import, ast.ImportFrom)):
+            out |= {(getattr(s, "module", None), a.name, a.asname) for a in s.names}
+    return out
+
+
+def classify(s):
+    if isinstance(s, ast.FunctionDef) and s.name in ALLOWED_DEFS:
+        return f"FunctionDef {s.name}", True
+    if (isinstance(s, ast.Expr) and isinstance(s.value, ast.Call) and getattr(s.value.func, "id", "") == "print"
+            and s.value.args):
+        a = s.value.args[0]
+        lead = a.value if isinstance(a, ast.Constant) else (a.values[0].value if isinstance(a, ast.JoinedStr)
+                                                               and a.values and isinstance(a.values[0], ast.Constant) else "")
+        if isinstance(lead, str) and lead.startswith(PRINT_PREFIX):
+            return "Expr print [steps] vertical check", True
+    return f"{type(s).__name__} @line {s.lineno}", False
+
+
+def main(base, cand):
+    B, C = stmts(base), stmts(cand)
+    ok = True
+    if len(B) != len(C):
+        print(f"FAIL statement count differs: base {len(B)} vs candidate {len(C)}"); return 1
+    missing = import_names(B) - import_names(C)
+    if missing:
+        ok = False; print(f"NOT-ALLOWED import names deleted: {sorted(map(str, missing))}")
+    for i, ((sb, db), (sc, dc)) in enumerate(zip(B, C)):
+        if db == dc:
+            continue
+        label, allowed = classify(sb)
+        print(f"{'ALLOWED    ' if allowed else 'NOT-ALLOWED'} stmt#{i} base:{sb.lineno} cand:{sc.lineno} {label}")
+        ok &= allowed
+    print("PASS" if ok else "FAIL")
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1], sys.argv[2]))
+```
+
+### 5. Landing mechanics (when the word comes) and what else I read
+
+- **Landing without touching the shared index or the WIP:** commit in the detached worktree (parent = the branch tip at that
+  moment), then \`git update-ref refs/heads/rlrk/optE-s2-substrate-swap <new> <expected-old>\` (compare-and-swap; on a race,
+  rebase the one-file commit onto the new tip and retry).  \`--no-verify\`-equivalent (no hooks run on update-ref), pathspec = the
+  one file by construction.  After landing, the main tree's working copy of the file is still the 09-07 WIP, now differing from
+  HEAD by the formatter changes plus the reverse of D4 — v3 §13 landing order (2): the WIP owner regenerates from the D4 commit,
+  does not merge.  Pins to hand pZ at landing: commit + blob + function names \`attitude_tilt_deg\` / \`vertical_cap_deg\` + the
+  print's line, and the predicate run repeated against the landed blob.
+- **\`ur15_mirror_acceptance.py:214\`** (v3 §5 D6 / §15 (3), owner p0): read on the committed blob (HEAD, 242 lines) — the limit leg
+  expects the mirrored range to be \`(−hi, −lo)\` while the mirror build keeps \`q\` and flips the axis (\`axis → −A a\`,
+  \`make_ko_mirror.py:16-19\`; the arm's \`ur15_base_mirrored.xml:38\` \`axis="-0 -0 -1"\` with \`range="-6.28319 6.28319"\`).  Under
+  \`M·R(n,q)·M = R(Mn, −q) = R(−Mn, q)\` the range that goes with a flipped axis and the same \`q\` is the SAME \`[lo, hi]\` — I agree the
+  predicate is inverted, and it cannot fail today only because all six ranges are symmetric.  A one-line fix (\`want = (lo_a, hi_a)\`)
+  needs its own word; not done.
+- **The 09-07 WIP** (measured): tree-wide 1104 files, +38404/−23899; on my driver +1387/−813 with an SPDX header inserted at :1 and
+  quote-style changes (a formatter / autofix pass); \`git stash list\` = 1 entry (not mine; not read).  Every p0 file under
+  \`p4_ur15_sim_20260727/\` is dirty in the shared tree, including the nominated \`kinonly_step_solve.py\` — the nomination is the
+  commit \`120746a49b\`, unaffected; anyone running the working-tree file runs the formatted one.  Not mine to land; p18 put it to Rs1.
+
+### 6. What this section asks for
+
+- p4: disposition of v3 (consume without cycle 3 / cycle 3) — if cycle 3 changes §6, this candidate is rebuilt, cheaply.
+- The window word for D4 (Rs1 via p18) = the landing above.  ⛔ Until then: the candidate lives only in the scratchpad worktree;
+  branch untouched; run 0; route run ② conditional and unmet.
