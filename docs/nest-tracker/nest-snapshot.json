@@ -144,7 +144,9 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-ROOT-COORD"
+      ],
       "parent": "T-ROOT-COORD",
       "children": [],
       "session_history": []
@@ -154,7 +156,10 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-ROOT-COORD",
+        "T-Coord-NEST-Audit-Wave-2"
+      ],
       "parent": "T-ROOT-COORD",
       "children": [],
       "session_history": []
@@ -164,7 +169,12 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-ROOT-COORD",
+        "T-Coord-NEST-Audit-Wave-2",
+        "T-Coord-NEST-Snapshot-Manifest-Final-Consolidation-Wave-6",
+        "T-Coord-Wave-6-Cross-Skill-Consistency-Audit"
+      ],
       "parent": "T-ROOT-COORD",
       "children": [],
       "session_history": []
@@ -829,7 +839,11 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-Meta-Multi-Pane-Orchestration-Patterns",
+        "T-Meta-Operational-Framework-V2-Design",
+        "T-Meta-Path-Y-Precedent-Index"
+      ],
       "parent": "T-Meta",
       "children": [
         "T-Meta-Cross-Pane-Coordination-Patterns-AP-13-Update",
@@ -842,7 +856,11 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-Meta-Cross-Pane-Coordination-Patterns",
+        "T-Meta-Multi-Pane-Orchestration-Patterns",
+        "T-Meta-Path-Y-Precedent-Index-2026-05-04-Update"
+      ],
       "parent": "T-Meta-Cross-Pane-Coordination-Patterns",
       "children": [],
       "session_history": []
@@ -852,7 +870,12 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-Meta-Cross-Pane-Coordination-Patterns",
+        "T-Meta-Cross-Pane-Coordination-Patterns-AP-13-Update",
+        "T-Meta-Multi-Pane-Orchestration-Patterns",
+        "T-Meta-Path-Y-Precedent-Index-2026-05-04-Update"
+      ],
       "parent": "T-Meta-Cross-Pane-Coordination-Patterns",
       "children": [],
       "session_history": []
@@ -862,7 +885,10 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-Meta-Operational-Framework-V2-Design",
+        "T-Meta-Path-Y-Precedent-Index"
+      ],
       "parent": "T-Meta",
       "children": [],
       "session_history": []
@@ -872,7 +898,9 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-Meta-Path-Y-Precedent-Index"
+      ],
       "parent": "T-Meta",
       "children": [],
       "session_history": []
@@ -894,7 +922,11 @@
       "goal": "|",
       "means": "|",
       "status": "IN_PROGRESS",
-      "dependencies": [],
+      "dependencies": [
+        "T-Meta-Path-Y-Precedent-Index",
+        "T-Meta-Cross-Pane-Coordination-Patterns",
+        "T-Meta-Multi-Pane-Orchestration-Patterns"
+      ],
       "parent": "T-Meta-Path-Y-Precedent-Index",
       "children": [],
       "session_history": []
@@ -3000,7 +3032,9 @@
       "means": "|",
       "status": "COMPLETE",
       "dependencies": [
-        "T-Skill-IC-P4-Phase1-Sweep-Wrapper-Actual-Impl"
+        "T-Skill-IC-P4-Phase1-Sweep-Wrapper-Actual-Impl",
+        "T-Skill-IC-P4-Phase1-Sweep-Wrapper-Impl-Spec",
+        "T-IC-P4-Cable-Seg-Cost-Lower"
       ],
       "parent": "T-Skill-IC",
       "children": [],
