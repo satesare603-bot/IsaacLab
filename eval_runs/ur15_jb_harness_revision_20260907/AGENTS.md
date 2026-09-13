@@ -90,3 +90,13 @@ numbers unknown until their basis and the scope of the product change are set.
   Upper tool space and lower fingertip space are separate observations. Existing
   carrier/mount surface overlaps remain recorded; mounting details, stiffness
   and force capability are unresolved. No upper retainer or arm motion is added.
+- `analysis/hand_mount_interface_v02.md` records the subsequent mounting detail.
+  The retained 2016-dated mesh matches the 2018 manual's 14 x 31 mm face, two
+  3.4 mm clearances at 16 mm pitch, and central 3 mm indexing hole. The later
+  2019 TM M5-center drawing does not match it. Keep that version distinction.
+  The new 4 mm plate and nominal smooth M3/index bores are comparison geometry;
+  no material, manufacturing fit, screw engagement or force criterion is chosen.
+  The source hardware, contacts and saved transforms stay unchanged. Closed
+  edge topology is observed, but zero-area tessellation faces and mounting
+  surface contacts remain explicitly recorded; this is not manufacturing CAD
+  or a physical acceptance verdict. Arm motion and video remain paused.

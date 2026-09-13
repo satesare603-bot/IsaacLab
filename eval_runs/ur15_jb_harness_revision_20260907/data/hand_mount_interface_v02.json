@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "source_sha256": "9414123be71635c27e419bc73a90f92517de453967d525d23e9387e61d2eb6e4",
+  "setbacks_m": {"D30": 0.030, "D60": 0.060},
+  "default_candidate": "D30",
+  "plate_thickness_m": 0.004,
+  "plate_width_m": 0.014,
+  "plate_height_m": 0.031,
+  "rail_section_m": [0.004, 0.006],
+  "rail_rear_from_mount_center_m": 0.006,
+  "nominal_mount_bore_diameter_m": 0.003,
+  "cylinder_segments": 64,
+  "tool_lower_z_above_seat_m": [0.0038, 0.0538],
+  "tool_upper_z_above_seat_m": [0.0538, 0.1888769757245636],
+  "source_mount_face_window_local_m": {"min_z": 0.0135, "max_z": 0.0446, "min_y": -0.020},
+  "source_plane_normal_y_max": -0.9999,
+  "source_small_loop_span_max_m": 0.012,
+  "measurement_identity_check_m": 0.000001,
+  "official_reference": {
+    "url": "https://assets.robotiq.com/website-assets/support_archives/document_en/2F-85_2F-140_Instruction_Manual_PDF_20181130.pdf",
+    "drawing_page": 131,
+    "replacement_page": 150,
+    "measured_feature_correspondence": "14 x 31 mm face; two 3.4 mm screw clearances, 16 mm pitch; central 3 mm indexing hole",
+    "screw_reference": "The 2018 manual specifies two M3-0.5 x 8 mm low-head screws for standard replacement tips. Custom-tip screw length and thread engagement are not approved here.",
+    "later_drawing_not_applied": "2019 TM HTML Fig. 6-13, M5 center and two smaller indexing holes, does not match the retained mesh"
+  },
+  "mount_holes_representation": "Smooth nominal M3 thread envelopes and a nominal 3 mm indexing bore, all through the comparison plate. No thread, pilot drill, fit, pin length or screw selection.",
+  "selected_setback_m": null,
+  "material": null,
+  "physical_acceptance_verdict": null
+}

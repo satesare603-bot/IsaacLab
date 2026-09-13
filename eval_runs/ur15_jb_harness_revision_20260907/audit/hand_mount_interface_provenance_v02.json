@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-09-13T22:24:43.099450+09:00",
+  "source_sha256": "9414123be71635c27e419bc73a90f92517de453967d525d23e9387e61d2eb6e4",
+  "official_document_sources": "../references/hand_mount_interface_v02/sources.json",
+  "model_scope": "Two static setback samples; same original hardware and contact meshes, same saved world transforms and joints",
+  "generation_fix": "Pre-union front bridge and side rail with existing axis-aligned box union; keep Blender EXACT for plate and holes. No dimension or tolerance changes.",
+  "initial_failure": "Open-edge assertion, left carrier. Raw failing Boolean inputs, outputs and logs are retained in the delivery audit/failed_generation.",
+  "subsequent_validation": "Raw output edge-topology and Euler checks added without geometry regeneration. Added fields match saved meshes.",
+  "remaining_zero_area_triangles": {
+    "D30": {
+      "left_left_carrier": 3,
+      "left_right_carrier": 2
+    },
+    "D60": {
+      "left_left_carrier": 3,
+      "left_right_carrier": 2
+    }
+  },
+  "raw_topology_observation_is_manufacturing_approval": false,
+  "native_readback_identical": true,
+  "physical_acceptance_verdict": null,
+  "video_created": false,
+  "motion_created": false
+}

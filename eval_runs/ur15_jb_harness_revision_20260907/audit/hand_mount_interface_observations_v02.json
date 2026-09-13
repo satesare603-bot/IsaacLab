@@ -1,0 +1,1178 @@
+{
+  "recorded_at": "2026-09-13T22:08:01.102679+09:00",
+  "settings": {
+    "schema_version": 2,
+    "source_sha256": "9414123be71635c27e419bc73a90f92517de453967d525d23e9387e61d2eb6e4",
+    "setbacks_m": {
+      "D30": 0.03,
+      "D60": 0.06
+    },
+    "default_candidate": "D30",
+    "plate_thickness_m": 0.004,
+    "plate_width_m": 0.014,
+    "plate_height_m": 0.031,
+    "rail_section_m": [
+      0.004,
+      0.006
+    ],
+    "rail_rear_from_mount_center_m": 0.006,
+    "nominal_mount_bore_diameter_m": 0.003,
+    "cylinder_segments": 64,
+    "tool_lower_z_above_seat_m": [
+      0.0038,
+      0.0538
+    ],
+    "tool_upper_z_above_seat_m": [
+      0.0538,
+      0.1888769757245636
+    ],
+    "source_mount_face_window_local_m": {
+      "min_z": 0.0135,
+      "max_z": 0.0446,
+      "min_y": -0.02
+    },
+    "source_plane_normal_y_max": -0.9999,
+    "source_small_loop_span_max_m": 0.012,
+    "measurement_identity_check_m": 1e-06,
+    "official_reference": {
+      "url": "https://assets.robotiq.com/website-assets/support_archives/document_en/2F-85_2F-140_Instruction_Manual_PDF_20181130.pdf",
+      "drawing_page": 131,
+      "replacement_page": 150,
+      "measured_feature_correspondence": "14 x 31 mm face; two 3.4 mm screw clearances, 16 mm pitch; central 3 mm indexing hole",
+      "screw_reference": "The 2018 manual specifies two M3-0.5 x 8 mm low-head screws for standard replacement tips. Custom-tip screw length and thread engagement are not approved here.",
+      "later_drawing_not_applied": "2019 TM HTML Fig. 6-13, M5 center and two smaller indexing holes, does not match the retained mesh"
+    },
+    "mount_holes_representation": "Smooth nominal M3 thread envelopes and a nominal 3 mm indexing bore, all through the comparison plate. No thread, pilot drill, fit, pin length or screw selection.",
+    "selected_setback_m": null,
+    "material": null,
+    "physical_acceptance_verdict": null
+  },
+  "source_sha256": "9414123be71635c27e419bc73a90f92517de453967d525d23e9387e61d2eb6e4",
+  "source_file_unchanged": true,
+  "mount_interface": {
+    "holes": [
+      {
+        "center_local_m": [
+          -1.921274663619919e-10,
+          -0.018902041561270923,
+          0.02001464259221932
+        ],
+        "diameter_projected_m": 0.0033999999859587425,
+        "circle_radius_residual_max_m": 5.1717312613431404e-09,
+        "boundary_vertices": 25,
+        "role": "screw_lower"
+      },
+      {
+        "center_local_m": [
+          -1.3284729346434871e-10,
+          -0.018902397372374535,
+          0.028014640902704075
+        ],
+        "diameter_projected_m": 0.0029999999410397758,
+        "circle_radius_residual_max_m": 5.289982610593921e-09,
+        "boundary_vertices": 25,
+        "role": "index"
+      },
+      {
+        "center_local_m": [
+          -2.594376752416776e-10,
+          -0.018902753183608345,
+          0.0360146421404599
+        ],
+        "diameter_projected_m": 0.00339999944766462,
+        "circle_radius_residual_max_m": 5.009733393098251e-09,
+        "boundary_vertices": 25,
+        "role": "screw_upper"
+      }
+    ],
+    "screw_pitch_m": 0.015999999564065778,
+    "face_width_local_m": 0.014,
+    "face_height_local_m": 0.031000001,
+    "face_normal_local": [
+      1.0937077837962009e-08,
+      -0.9999999990109251,
+      -4.4476397300657426e-05
+    ],
+    "support_distance_m": 0.018901151363379623,
+    "source_face_plane_spread_m": 1.1713149491998642e-08,
+    "source_face_indices": [
+      962,
+      963,
+      964,
+      965,
+      966,
+      967,
+      968,
+      969,
+      970,
+      971,
+      972,
+      973,
+      974,
+      975,
+      976,
+      977,
+      978,
+      979,
+      980,
+      981,
+      982,
+      983,
+      984,
+      985,
+      986,
+      987,
+      988,
+      989,
+      990,
+      991,
+      992,
+      993,
+      994,
+      995,
+      996,
+      997,
+      998,
+      999,
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1015,
+      1016,
+      1017,
+      1018,
+      1019,
+      1020,
+      1021,
+      1022,
+      1023,
+      1024,
+      1025,
+      1026,
+      1027,
+      1028,
+      1029,
+      1030,
+      1031,
+      1032,
+      1033,
+      1034,
+      1035,
+      1036,
+      1037,
+      1038,
+      1039,
+      1040,
+      1041,
+      1042,
+      1043,
+      1044,
+      1045,
+      1046,
+      1047,
+      1048,
+      1049,
+      1050,
+      1051,
+      1052,
+      1053,
+      1054,
+      1055,
+      1056,
+      1057,
+      1058,
+      1059,
+      1060,
+      1061,
+      1062,
+      1063,
+      1064,
+      1065,
+      1066,
+      1067,
+      1068,
+      1069,
+      1070,
+      1071,
+      1072,
+      1073,
+      1074,
+      1075,
+      1076,
+      1077,
+      1078,
+      1079,
+      1080,
+      1081,
+      1082,
+      1083,
+      1084,
+      1085,
+      1086,
+      1087,
+      1088,
+      1089,
+      1090,
+      1091,
+      1092,
+      1093,
+      1094,
+      1095,
+      1096
+    ],
+    "drawing_identity_max_error_m": 5.523353796901831e-10,
+    "mount_frame_local": [
+      [
+        1.0,
+        0.0,
+        1.0937077837962009e-08,
+        -1.3284729346434871e-10
+      ],
+      [
+        1.093707782714442e-08,
+        -4.447639730065743e-05,
+        -0.9999999990109251,
+        -0.018902397372374535
+      ],
+      [
+        4.864418192294137e-13,
+        0.9999999990109252,
+        -4.4476397300657426e-05,
+        0.028014640902704075
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "face_z_bounds_local_m": [
+      0.01351464,
+      0.044514641
+    ]
+  },
+  "candidates": {
+    "D30": {
+      "setback_m": 0.03,
+      "preservation": {
+        "source_except_carriers_unchanged": true,
+        "all_world_matrices_and_joint_values_unchanged": true,
+        "carriers": [
+          {
+            "object": "left_left_carrier",
+            "world_bounds_near_m": [
+              [
+                -0.016000000847192605,
+                0.0029999982371084546,
+                -0.013500110626220696
+              ],
+              [
+                -0.011998616654719515,
+                0.06299999494202885,
+                0.01750006771087647
+              ]
+            ],
+            "closed_surface": true,
+            "connected_components": 1,
+            "euler_number": -4,
+            "raw_edge_topology_closed": true,
+            "raw_zero_area_triangles": 3,
+            "raw_minimum_triangle_area_m2": 0.0,
+            "volume_m3": 2.818984043400417e-06
+          },
+          {
+            "object": "left_right_carrier",
+            "world_bounds_near_m": [
+              [
+                0.011998619079589844,
+                0.0029999999999999957,
+                -0.013500110626220696
+              ],
+              [
+                0.016,
+                0.063,
+                0.01750006771087647
+              ]
+            ],
+            "closed_surface": true,
+            "connected_components": 1,
+            "euler_number": -4,
+            "raw_edge_topology_closed": true,
+            "raw_zero_area_triangles": 2,
+            "raw_minimum_triangle_area_m2": 0.0,
+            "volume_m3": 2.818984216651523e-06
+          }
+        ]
+      },
+      "tool_surface_observations": {
+        "near": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.01236931647201079,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.011999999286253095,
+                0.003000001185780206,
+                -0.007999999999999993
+              ],
+              "source_face_index": 51768
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.0446979196682172,
+              "object": "hardware_left_right_inner_knuckle_0",
+              "witness_m": [
+                0.01384391644970447,
+                0.042499999999999996,
+                0.02457771211325384
+              ],
+              "source_face_index": 47943
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01236931647201079,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.011999999286253095,
+                0.003000001185780206,
+                -0.007999999999999993
+              ],
+              "source_face_index": 260
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": null,
+              "object": null,
+              "witness_m": null,
+              "source_face_index": null
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.01236931647201079,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.011999999286253095,
+                0.003000001185780206,
+                -0.007999999999999993
+              ],
+              "source_face_index": 51768
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01236931647201079,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.011999999286253095,
+                0.003000001185780206,
+                -0.007999999999999993
+              ],
+              "source_face_index": 260
+            }
+          }
+        },
+        "early": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.012761039322777614,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.012403391336419198,
+                0.003000001325519329,
+                -0.007968104475145003
+              ],
+              "source_face_index": 51768
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.044824346879952674,
+              "object": "hardware_left_right_inner_knuckle_0",
+              "witness_m": [
+                0.01424682677701682,
+                0.042499999999999996,
+                0.024587242995179212
+              ],
+              "source_face_index": 47943
+            },
+            "insert": {
+              "radius_to_surface_m": 0.012761039322777614,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.012403391336419198,
+                0.003000001325519329,
+                -0.007968104475145003
+              ],
+              "source_face_index": 260
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": null,
+              "object": null,
+              "witness_m": null,
+              "source_face_index": null
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.012761039322777614,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.012403391336419198,
+                0.003000001325519329,
+                -0.007968104475145003
+              ],
+              "source_face_index": 51768
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.012761039322777614,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.012403391336419198,
+                0.003000001325519329,
+                -0.007968104475145003
+              ],
+              "source_face_index": 260
+            }
+          }
+        },
+        "open": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 52809
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.04638364733120275,
+              "object": "hardware_left_right_inner_knuckle_0",
+              "witness_m": [
+                0.015250044976617133,
+                0.043805009621692204,
+                0.0398
+              ],
+              "source_face_index": 48438
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 1301
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": null,
+              "object": null,
+              "witness_m": null,
+              "source_face_index": null
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 52809
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 1301
+            }
+          }
+        },
+        "clear": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 52684
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.05456128372066925,
+              "object": "hardware_left_left_inner_finger_0",
+              "witness_m": [
+                -0.023998622989447025,
+                0.04899999771283415,
+                0.0126779250160554
+              ],
+              "source_face_index": 43236
+            },
+            "insert": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 1176
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1609769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1609769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.052924406092544,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.019999828002826438,
+                0.048999996327610755,
+                0.0398
+              ],
+              "source_face_index": 928
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 52684
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.018499999999999996,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.018499999999999996,
+                0.1609769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 1176
+            }
+          }
+        }
+      },
+      "glb": {
+        "file": "hand_mount_interface_D30_v02.glb",
+        "sha256": "312c60c1e9c9034656c57985121ce8eb030e5e58cd6a8c5fcae613af407751b4",
+        "mesh_count": 18,
+        "readback_mesh_count": 18,
+        "bounds_m": [
+          [
+            -0.06426016898839715,
+            -0.016,
+            -0.017
+          ],
+          [
+            0.06426016483147669,
+            0.0935,
+            0.1498769757245636
+          ]
+        ],
+        "readback_bounds_max_difference_m": 1.4901161138336505e-09
+      }
+    },
+    "D60": {
+      "setback_m": 0.06,
+      "preservation": {
+        "source_except_carriers_unchanged": true,
+        "all_world_matrices_and_joint_values_unchanged": true,
+        "carriers": [
+          {
+            "object": "left_left_carrier",
+            "world_bounds_near_m": [
+              [
+                -0.016000000838821294,
+                0.0030000011857787,
+                -0.013500110626220696
+              ],
+              [
+                -0.011998616654719515,
+                0.09299999494202885,
+                0.01750006771087647
+              ]
+            ],
+            "closed_surface": true,
+            "connected_components": 1,
+            "euler_number": -4,
+            "raw_edge_topology_closed": true,
+            "raw_zero_area_triangles": 3,
+            "raw_minimum_triangle_area_m2": 0.0,
+            "volume_m3": 3.5389839487749226e-06
+          },
+          {
+            "object": "left_right_carrier",
+            "world_bounds_near_m": [
+              [
+                0.011998619079589844,
+                0.002999999999999989,
+                -0.013500110626220696
+              ],
+              [
+                0.016,
+                0.093,
+                0.01750006771087647
+              ]
+            ],
+            "closed_surface": true,
+            "connected_components": 1,
+            "euler_number": -4,
+            "raw_edge_topology_closed": true,
+            "raw_zero_area_triangles": 2,
+            "raw_minimum_triangle_area_m2": 0.0,
+            "volume_m3": 3.538984217460738e-06
+          }
+        ]
+      },
+      "tool_surface_observations": {
+        "near": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.012369316876852979,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012,
+                0.002999999999999989,
+                -0.007999999999999993
+              ],
+              "source_face_index": 52940
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.07380991818628711,
+              "object": "hardware_left_right_inner_knuckle_0",
+              "witness_m": [
+                0.01384391644970447,
+                0.0725,
+                0.02457771211325384
+              ],
+              "source_face_index": 47943
+            },
+            "insert": {
+              "radius_to_surface_m": 0.012369316876852979,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012,
+                0.002999999999999989,
+                -0.007999999999999993
+              ],
+              "source_face_index": 1432
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": null,
+              "object": null,
+              "witness_m": null,
+              "source_face_index": null
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.012369316876852979,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012,
+                0.002999999999999989,
+                -0.007999999999999993
+              ],
+              "source_face_index": 52940
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.012369316876852979,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012,
+                0.002999999999999989,
+                -0.007999999999999993
+              ],
+              "source_face_index": 1432
+            }
+          }
+        },
+        "early": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.01276103970490351,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012403392050166114,
+                0.002999999999999989,
+                -0.007968104475145003
+              ],
+              "source_face_index": 52940
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.0738865486622181,
+              "object": "hardware_left_right_inner_knuckle_0",
+              "witness_m": [
+                0.01424682677701682,
+                0.0725,
+                0.024587242995179212
+              ],
+              "source_face_index": 47943
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01276103970490351,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012403392050166114,
+                0.002999999999999989,
+                -0.007968104475145003
+              ],
+              "source_face_index": 1432
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": null,
+              "object": null,
+              "witness_m": null,
+              "source_face_index": null
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.01276103970490351,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012403392050166114,
+                0.002999999999999989,
+                -0.007968104475145003
+              ],
+              "source_face_index": 52940
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01276103970490351,
+              "object": "left_right_carrier",
+              "witness_m": [
+                0.012403392050166114,
+                0.002999999999999989,
+                -0.007968104475145003
+              ],
+              "source_face_index": 1432
+            }
+          }
+        },
+        "open": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 52805
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.0753640717918487,
+              "object": "hardware_left_right_inner_knuckle_0",
+              "witness_m": [
+                0.015250044976617133,
+                0.0738050096216922,
+                0.0398
+              ],
+              "source_face_index": 48438
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 1297
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": null,
+              "object": null,
+              "witness_m": null,
+              "source_face_index": null
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 52805
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1359769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.01838102550791889,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940515564575196,
+                0.0040000000000000036,
+                -0.009721963983944593
+              ],
+              "source_face_index": 1297
+            }
+          }
+        },
+        "clear": {
+          "lower": {
+            "all": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 52680
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.08256472336305268,
+              "object": "hardware_left_left_inner_finger_0",
+              "witness_m": [
+                -0.023998622989447025,
+                0.07899999771283416,
+                0.0126779250160554
+              ],
+              "source_face_index": 43236
+            },
+            "insert": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 1172
+            }
+          },
+          "upper": {
+            "all": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1609769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1609769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.08149228515574437,
+              "object": "left_left_carrier",
+              "witness_m": [
+                -0.019999828002826438,
+                0.07899999632761076,
+                0.0398
+              ],
+              "source_face_index": 926
+            }
+          },
+          "whole": {
+            "all": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 52680
+            },
+            "hardware": {
+              "radius_to_surface_m": 0.048499999999999995,
+              "object": "hardware_left_gripper_base_0",
+              "witness_m": [
+                0.0,
+                0.048499999999999995,
+                0.1609769747245636
+              ],
+              "source_face_index": 1258
+            },
+            "insert": {
+              "radius_to_surface_m": 0.018380657543084745,
+              "object": "left_right_edge_contour",
+              "witness_m": [
+                0.017940138564575193,
+                0.0040000000000000036,
+                0.012878036016055402
+              ],
+              "source_face_index": 1172
+            }
+          }
+        }
+      },
+      "glb": {
+        "file": "hand_mount_interface_D60_v02.glb",
+        "sha256": "bca89ea16dc8b7162af86653bc8417d4afa30e21faa6772b2810d9393fe1c12b",
+        "mesh_count": 18,
+        "readback_mesh_count": 18,
+        "bounds_m": [
+          [
+            -0.06426016898839715,
+            -0.016,
+            -0.017
+          ],
+          [
+            0.06426016483147669,
+            0.1235,
+            0.1498769757245636
+          ]
+        ],
+        "readback_bounds_max_difference_m": 1.4901161138336505e-09
+      }
+    }
+  },
+  "physical_acceptance_verdict": null
+}

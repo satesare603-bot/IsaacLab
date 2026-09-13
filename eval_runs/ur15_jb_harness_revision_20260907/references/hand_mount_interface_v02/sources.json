@@ -1,0 +1,17 @@
+{
+  "retrieved_on": "2026-09-13T22:20:47.156317+09:00",
+  "manufacturer": "Robotiq",
+  "matching_2018_pdf": {
+    "url": "https://assets.robotiq.com/website-assets/support_archives/document_en/2F-85_2F-140_Instruction_Manual_PDF_20181130.pdf",
+    "sha256": "4a059283f11b12d458b084aab3e0c9238ac2cd61b42cd630551d4fc10a6d4ad3",
+    "page": 131,
+    "image_export": "pdftoppm -f 131 -l 131 -scale-to 1650 -singlefile -png; original page, no edits"
+  },
+  "nonmatching_2019_drawing": {
+    "url": "https://assets.robotiq.com/website-assets/support_documents/document/online/2F-85_2F-140_TM_InstructionManual_HTML5_20190503.zip/2F-85_2F-140_TM_InstructionManual_HTML5/Content/Resources/Images/Version%204/C-049-DISTALE.png",
+    "sha256": "c98c9407048e495be89bbe859946cf4fd26ee559a3939187fbed658c87832dfa"
+  },
+  "sources_match_features_not_complete_hardware_identification": true,
+  "manufacturer_documents_bundled": false,
+  "scope": "Source URLs and checksums; source pages were inspected locally. Offline model generation uses the pinned input mesh."
+}
