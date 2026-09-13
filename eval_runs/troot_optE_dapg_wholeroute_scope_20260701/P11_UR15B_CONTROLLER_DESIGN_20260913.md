@@ -1,10 +1,10 @@
-# p11 — UR15-B controller 設計 v2（既存 control class の B 側導出・識別記録つき）
+# p11 — UR15-B controller 設計 v3（既存 control class の B 側導出・識別記録つき）— ⚠ cycle 2 の union を反映・**未検証**（第 3 cycle の可否 = p4/Rs1）
 
-**Author** w2:p11 ARM-CONTROL-DESIGN · **Written** 2026-09-13 08:50:08 JST · Naming per m-p18-256: **Rs1 = 人間 / Rs2 = p4**.
-**系譜**: v1 = `c7884ce0ff`（FAIL 印つき・blob `1966f3fa4c03`）／cycle-1 verdict = `P11_L3_FIVEWAY_VERDICT_UR15B_CONTROLLER_20260913.md` @ `c7884ce0ff`（union: CRITICAL 1・HIGH 10・MEDIUM 19・LOW 16 = 全受入）。**本 v2 = その全部を反映した書き直し**。cycle 2（pre-check ＋ 5 体）の結果は §15 に追記（append-only）。
-**依頼** = m-p18-280 §3（08-10 09:56）。**Rs1 逐語①**「**UR15-Bようのコントローラも作成**」（kickoff `P4_MOUNTING_C-2_CHAIN_KICKOFF_20260808.md` `:2225-2231` @ `9e9f6199b3`・custody `1d9974face`・DDR #68 `00-DESIGN-STATUS-LEDGER.md:172` @ `358a1d72ad`）。
-**規約**: 数値は本書内の query 付き値のみ／行番号は **必ず rev を伴う**／数は「行数 or 出現数」を明記／**測定**と**導出**を札で分ける／07-29 由来の数値には **mounting と hand の札**を付ける。
-⛔ **run を要求せず含意しない**（§10 の各 row に計器・object・認可状態を明記）。実装 = p0 / 検証 = pZ / まとめ = p4。04-Specs 不触。§0 不変前提（RS71 `:27-:29` @ `13a1331fc0`）を変えない。
+**Author** w2:p11 ARM-CONTROL-DESIGN · **Written** 2026-09-13 11:49:23 JST · Naming per m-p18-256: **Rs1 = 人間 / Rs2 = p4**.
+**系譜**: v1 = `c7884ce0ff`（FAIL 印つき・blob `1966f3fa4c03`）→ cycle-1 verdict（FAIL・pre-check BLOCK）／v2 = `5f0c2526c9`（blob `5a538a9445`・sha256 `cfe49d063c760de4…`・168 行・byte 同一で bank）→ **cycle-2 verdict = `P11_L3_FIVEWAY_VERDICT_UR15B_CONTROLLER_20260913.md` §5 @ `5f0c2526c9`（union: CRITICAL 0・HIGH 9・MEDIUM 25・LOW 15 = 全受入・DECIDE = FAIL・上限 2 到達）**。**本 v3 = その全部を反映した書き直し**。⛔ **v3 は 5 体検証を通っていない**（skill の上限 = 2 cycle）。処置 = §15。
+**依頼** = m-p18-280 §3（08-10 09:56）。**Rs1 逐語**「**UR15-Bようのコントローラも作成**」（kickoff `P4_MOUNTING_C-2_CHAIN_KICKOFF_20260808.md` `:2225-2231` @ `9e9f6199b3` では **①**・custody `1d9974face`／DDR #68 `00-DESIGN-STATUS-LEDGER.md:172` @ `358a1d72ad` では **追裁定②**（① = 「UR15 とは鏡像関係に … UR15-B とせよ」custody `e00a990c45`）— 同一逐語・番号は object ごとに違う）。
+**規約**: 数値は本書内の query 付き値のみ（Tier 4 の command 出力 = verdict §5-E）／行番号は **必ず rev を伴う**／数は「行数 or 出現数」を明記／**測定**と**導出**を札で分ける／07-29 由来の数値には **mounting と hand の札**を付ける／run 記録は **mounting・hand・driver rev** の 3 札。
+⛔ **run を要求せず含意しない**（§10 の各 row に計器・object・認可状態を明記）。実装 = p0 / 検証 = pZ / まとめ = p4。04-Specs 不触。§0 不変前提 5 件（RS71 `:22-29` @ `13a1331fc0`・§14 Tier 0 に列挙）を変えない。
 ⚠ **34 日の遅延** = 当卓の self-report（artifact なし）: court word は 08-10 10:0x に起草・未送信（session 中断・scratchpad 消失）。送達 = 2026-09-13 08:25:24 JST（p18 transcript `:41542`・§1453／Rs1「p11の件は手送りで届けて」08:31 → §1454 で p4/p0/pZ へ手送り）。
 
 ---
@@ -13,89 +13,101 @@
 
 - 根拠 = role brief `ARM_CONTROL_DESIGN_ROLE_BRIEF_p11_20260721.md` @ `2887037c9f` `:8`「設計だけ」／`:62`「どう駆動するか＝あなた」。
 - 読み（p4 kickoff 09:51 節・DDR #68 と同一・p4 09-13 節 2 で「差なし」）: **既存 class（per-arm 6D DLS ＋ position servo）の B 側導出。新方式でない。** class が B を表現できない地点 = STOP-and-report（§11）。
-- ⚠ brief `:69`「Rs 承認後、p4 が p0 へ実装を渡す」の読み = **Rs1 ①（08-10）が本導出への :69 承認**〔inference 札・違えば p4 が正す〕。p0 の build 窓は Rs1 の一言（p4 09-13 節 2）。
+- brief `:69`「Rs 承認後、p4 が p0 へ実装を渡す」の **Rs 承認 = 未充足**（Rs1 の一言待ち・p4 09-13 節 2「p0 の build 窓は Rs1 の一言」）。Rs1 の逐語は **作成の命令**であって本導出の承認ではない（v2 の「① = :69 承認」推論は逐語と照合できず撤回・cycle 2 H7）。
 
 ## 1. 結論（導出結果・3 行）＋ Rs1 への問い
 
-1. **導出結果 = identity ＋ 側別測定 ＋ 計器 1 件。** 同じ q を両腕へ（関節符号 map なし）・側に依る量（AXFIX・pad 名・menu 符号・servo 添字）は側ごとに測られて入る・**唯一の code 変更 = 姿勢 cap 計器の側別化（D4・gate-inert・§5）**。
-2. **B が既存 class に駆動されることは C-2 で測られている**（08-10 DoD record・ただし当時の hand は回転コピー）— 鏡像 hand（`b7a5e39ecf`）後の再測 = pZ R0（§10）。
+1. **導出結果 = identity ＋ 側別測定 ＋ 計器 1 件。** 同じ q を両腕へ（関節符号 map なし）・側に依る量（AXFIX・pad 名・menu 符号・servo 添字）は側ごとに測られて入る・**唯一の code 変更 = 姿勢 cap 計器の側別化（D4・gate-inert・§6）**。
+2. **既存 class が B を駆動したことは 2 本の run 記録にある（§3）** — 08-10 C-2 record（回転コピー hand）と 08-10 U1（鏡像 hand・0.22/45）。⚠ 両記録の metric は **hand の chirality に盲目**（回転コピー hand の run が全 metric を通した）⇒ 「B で実行された」までが証拠・「B で正しい」= pZ R0／R1′（§10）が open。**C-2 × 鏡像 hand の組は未測**。
 3. **鏡像の主張は関節空間**（identity・負の対照 = reference の R 式）。task 空間の「同一 target → 鏡像軌道」は偽（鏡像運動には鏡像 target が要る・pZ 訂正 = 台帳 §1401 `:46790`）。
-- ⭐ **Rs1 への問い（p4 経由・非 blocking で設計は進む）**: 「作成」は **identity ＋ D4 ＋ 本書 §7 の識別記録**で満たされるか、**B 側の別 artifact**（例: p0 が driver に identity print 1 行）を期待するか。当卓の推奨 = 前者＋print 1 行（§7・採否 p4）。
+- ⭐ **Rs1 への問い（p4 経由・非 blocking で設計は進む・ただし #69 の「完成」宣言はこの回答を待つ = critical path 上）**: 「作成」は **identity ＋ D4 ＋ 本書 §7 の識別記録**で満たされるか、**B 側の別 artifact**を期待するか。**両枝を具体化**: (A) 前者＋print 1 行（§7 提案・D4 の hunk に条件付きで畳む・§13 (b) の許容 = 2 def ＋ 2 Expr）／(B) driver import 時の **側別 controller 記録 1 行**（AXFIX・QADR・AIDX・sgn・design commit — `ur15_base_mirrored.xml:2` `<mujoco model="UR15-B">` と同じ「created object」形・cost = print 1 行・owner p0・DoD = (A) と同じ条件枝）。当卓の推奨 = (A)。採否 = **Rs1**（p4 経由）。
+- p4 基準 (f)「鏡像参照値と整合（R = −L、ただし UPPER_ARM と WRIST_1 = −L + π）」への本書の対応 = **R 式は非鏡像機（stock 腕を右 mount へ）の経路 = UR15-B では負の対照**（§5 D1）。**充足判定は p4**（当卓は宣言しない）。p4 が (f) を字義通り（B の関節値 = R 式）と読む場合、本設計は不整合に見える — その読みでは acceptance `:121` の負の対照（0/48・worst 1357.5480 mm）が (f) を反証する。
 
 ## 2. 接地と pin（全て当卓が本 session で直読・rev つき）
 
 | object | rev | 行数 / 札 |
 |---|---|---|
-| `p4_ur15_sim_20260727/ur15_steps_wired.py`（以下 wired） | **`22feba17a6`**（blob `75eefef4e27e`・sha256 `57de8c3ec7ed0262…`） | 4,022 行。共有 tree は **dirty**（+1387/−813・mtime 09-07 23:15・author は git に無い）= formatter ＋ 未使用 import 6 個削除 ＋ `_interleave_report` 分離。module 全体 AST（import 正規化）292/292・**制御 13 def は blob と同一**（当卓・CC5・CC6 の独立再現 3 件・陽性対照 = literal 1 反転で検出）。⇒ 本書は blob で pin。**着地前提: p0 は clean worktree @ `22feba17a6` から編集**（WIP は D4 対象行 `@@ -1302 @@ def vertical_cap_deg` 等と重なる）・WIP の処遇 = p18 へ照会 |
-| `ur15_cell_spec.py` | `0f6b4a733e` | **1,250 行**（v1 の 1,395 は dirty tree・誤り）。共有 tree は dirty（+391/−246・formatter）。cite は blob 行 |
+| `p4_ur15_sim_20260727/ur15_steps_wired.py`（以下 wired） | **`22feba17a6`**（blob `75eefef4e27e`・sha256 `57de8c3ec7ed0262…`） | 4,022 行。**HEAD の blob == pin（本日）** — 以後 wired に commit が入れば pin は静かに古くなる。共有 tree は **dirty**（+1387/−813・mtime 09-07 23:15・author は git に無い）= formatter ＋ 未使用 import 6 名削除 ＋ F541 編集 3 stmt（`_interleave_report`・print・STEPS loop の stall raise）。top-level stmt **292 個**（個数一致）・**制御 13 def は blob と同一**（AST・当卓・CC5・CC6 の独立再現）。⇒ 本書は blob で pin。着地順 = §13 |
+| `ur15_cell_spec.py` | `0f6b4a733e` | **1,250 行**。共有 tree は dirty（+391/−246・formatter）。cite は blob 行 |
 | `ur15_base_mirrored.xml`（`<mujoco model="UR15-B">` `:2`） | `6a542f45dd` | 正式化 `c737f6974e` ＋ header 修正 |
 | `ur15_base.xml` | `bf0235cfd8` | stock |
-| `_ur15_2f85_koshape_actuated_mirrored.xml` | `b7a5e39ecf` | 鏡像コ hand（08-10 09:09） |
+| `_ur15_2f85_koshape_actuated_mirrored.xml` | `b7a5e39ecf` | 鏡像コ hand（08-10 09:09）・generator `make_ko_mirror.py`（A は測定・signed permutation・range/tendon/ctrl semantics byte 同一 `:16-19`） |
 | stock hand `thread_isaac_lab/assets/ur5e_robotiq/robotiq_2f85/_ur15_2f85_koshape_actuated.xml` | HEAD tracked | — |
-| `UR15_MIRROR_ACCEPTANCE_20260729.txt` ＋ `ur15_mirror_acceptance.py` | `38678f5946` | 147 行。**札: mounting 0.22/45**（`:4`）・kinematics-of-position のみ（`:132`）・腕のみ |
-| `HOME_POSE_SYMMETRY_20260729.txt` ＋ `probe_home_pose_symmetry.py` | `dfb8dc1bde`（07-29 00:55） | 78 行。**札: t42 build = 0.22/45（当時の cell_spec `fc9d999e20`）・hand = 鏡像化前の回転コピー**（`GRIP_XML_MIRRORED` 初出 `b7a5e39ecf` 08-10）・§5 は生 (yaw,roll) を両側へ入れ full-matrix Mx 共役を検査（probe `:249-253`） |
+| `UR15_MIRROR_ACCEPTANCE_20260729.txt` ＋ `ur15_mirror_acceptance.py` | `38678f5946` | 147 行。**札: mounting 0.22/45**（`:4`）・kinematics-of-position のみ（`:132`）・腕のみ。⚠ script `:48-49` の `REF_DIR = ~/Downloads/ur15-dual-arm-cell` は **不在**（09-13 ls）— reference JSON の同一 copy = sha256 `20ac0935c707757c…`（31,839 B・`/home/rlrk/src/ur15-op020-stocker10-20260906/…` 他 2 箇所・repo 外）。`build()` `:62-73` は JSON 不要 |
+| `HOME_POSE_SYMMETRY_20260729.txt` ＋ `probe_home_pose_symmetry.py` | `dfb8dc1bde`（07-29 00:55） | 78 行。**札: t42 build = 0.22/45（当時の cell_spec `fc9d999e20`）・hand = 鏡像化前の回転コピー**（`GRIP_XML_MIRRORED` 初出 `b7a5e39ecf` 08-10）・§5 は生 (yaw,roll) を両側へ入れ full-matrix Mx 共役を検査（計算 = probe **`:199-222`**・`:249-254` は scope 文） |
 | `PZ_ARM_MIRROR_LEG_RESULT_20260810.md`／`PZ_MIRROR_LEG_PREREG_20260810.md` | `cf0a14cea3`／`9d118cbf93` | 47／35 行。**札: asset 級**（reference JSON の FK・mesh Hausdorff・compile field） |
-| `_gen/dod_c2_20260810/run.log`（untracked） | sha256 `04599b84e34be51e…`・89,798 B・08-10 02:10 | **札: C-2（`:84` spread 0.280 tilt 20.0）・R = UR15-B arm ＋ 回転コピー hand（run 02:11 ＜ hand 09:09）** |
-| `ur15_gripper_mirror_acceptance.py` | `b7a5e39ecf` | hand-on-arm の driver 不要 builder（§10 の計器） |
-| LEDGER `:170/:172/:173/:174`（DDR #66/#68/#69/#70）／RS71 `:27-:29`／brief `:8/:59/:62/:69`／kickoff `:2225-2231`（09:51）・09-13 節／台帳 §1401 `:46790`・§1403 `:46800-46810`・§1453-1454 | `358a1d72ad`／`13a1331fc0`／`2887037c9f`／`9e9f6199b3`／`6006eeb2a8` | — |
+| `PZ_VERDICT_b7a5e39ecf_MIRROR_20260810.md` | `717eb6aa2f` | `:42` gripper acceptance の定数 = driver の C-2（TILT 1.22173・YOKE_SPREAD 0.28・SHOULDER_HEIGHT 1.53）・`R_TOOL` == driver の `Rt` 積（数値） |
+| **U0** `_gen/dod_c2_20260810/run.log`（**gitignored** `.gitignore:5`・sha custody = kickoff 09:09 節） | sha256 `04599b84e34be51e…`・89,798 B・08-10 02:10 | **札: C-2（`:84` spread 0.280 tilt 20.0）・R = UR15-B arm ＋ 回転コピー hand（run 02:11 ＜ hand 09:09）・driver rev = `93adb43eb7`（02:10 以前の最終 wired commit・run tree の状態は record に無い）** — `93adb43eb7`→`22feba17a6` の diff +141/−6 は制御 def（`solve_ik`/`pose_menu`/`_rdes`/`_measure_axfix`/`aim_slot_at`/`attitude_tilt_deg`/`vertical_cap_deg`）の外 |
+| **U1** `_gen/reshoot_speccell_20260810/run.log`（gitignored） | sha256 `a1ad9a2a8b0a2326…`・397 行・08-10 09:10-09:25 | **札: mounting 0.22/45（`:85`）・R = UR15-B ＋ 鏡像 hand（`:21/:27/:33` attach `robotiq_2f85_mirrored`）・driver rev = `b7a5e39ecf` 以後（hand 09:09 ＜ run 09:10）** |
+| **U2** `_gen/ko_mirror_acceptance.txt`（gitignored） | sha256 `92fad9158f708a4d…`・13 行・08-10 09:08 | `ur15_gripper_mirror_acceptance.py::main()` @ `b7a5e39ecf` の出力・**C-2 定数**（pZ verdict `:42`）・TEST 192/192（`:4`）・NEGATIVE 0/192 worst 135.377130 mm（`:11`）・poses HOME/alt × finger open/half/close |
+| `ur15_gripper_mirror_acceptance.py` | `b7a5e39ecf` | hand-on-arm の driver 不要 builder `build_side` `:52-68`（1 腕・actuator 無し・生 XML load・`acc.R_TOOL` `:63` = `ur15_mirror_acceptance.py:56-57` = wired `:420` と同一式） |
+| `kinonly_step_solve.py` | `99b2d7d672` | `:661` `sgn = float(spec.SIDES[t])`・`:666`（共有 tree は dirty・`:698/:703` に移動） |
+| `_gen/_steps_cell_full.xml`（driver が import 毎に書く `:446`） | 09-05 08:23・sha256 `4158e4e638e9b0fc…`・61,833 B | **不使用**（§12-5） |
+| LEDGER `:170/:172/:173/:174/:175`（DDR #66/#68/#69/#70/#71）／RS71 `:22-29`／brief `:8/:11/:59/:62/:69`／kickoff `:2225-2231`（09:51）・`:2286-2297`（09-13 節・基準 (a)-(h)）／台帳 §1401 `:46790`・§1403 `:46804`・§1453 `:47297`・§1454 `:47348` | `358a1d72ad`／`13a1331fc0`／`2887037c9f`／`9e9f6199b3`／`6006eeb2a8` | — |
 
-## 3. 生きている controller（測定）と、それが B を駆動している証拠
+## 3. 生きている controller（測定）と、それが B を駆動した記録
 
-- **`solve_ik(t, tgt, …)`** wired `:2036`: scratch MjData 上の 6D DLS。`e = [tgt − pinch(t); 0.6·er]`・**`er = rotvec((RD @ AXFIX[t]) @ Rtᵀ)`**（`:2115`）・`J = [0.5(Jp0+Jp1); 0.6 Jr]`・`dq = 0.5·Jᵀ(JJᵀ + 0.05²I)⁻¹e`（`:2118`）・`|dq| ≤ 0.15`（`:2120-2121`）・300 iter・収束 `pe ≤ 0.002 m`（`:2129`）・`re ≤ re_max`（既定 0.05／aim 0.02 `:887`／per-step 0.30 `:3398,:3411`）。側は `QADR/VADR/PAD/TOOLB/AXFIX[t]` で入る — 側固有の分岐 0。呼び手 = `aim_slot_at` `:854`・START solve `:2569-2632`・STEPS loop `:3143-3978`（module-level）。
-- **`ik()` `:646` は死んでいる**: `\bik\(` = 1 行（def のみ・rc=0）／陽性対照 `\bpinch\(` = 21 行 / 23 出現。⛔ p0 は B の何かを `ik()` に書かない。
-- servo = position actuator `AIDX[t]`（gain は関節名で決まる）・home = `d.ctrl[AIDX[t]] = HOME_POSE` 両側 loop `:2505-2507`。cell 構成 = `for tag, sign in SIDES.items()` `:401`・mount `pos=[sign·YOKE_SPREAD, 0, SHOULDER_HEIGHT]` `:409`・arm `:238`（R = `ur15_base_mirrored.xml`）・hand `:419`（R = `GRIP_XML_MIRRORED`）・wrist→hand frame `:420`。identity print `:567-568`。
-- ⚠ **driver は import 即実行**（`:442 m = cell.compile()`・`:1148-1149` cable settle mj_step 2000・`:3143` STEPS loop 全て module-level・`__main__` guard 0）⇒ **wired の import = wired 実行**（DDR #66 受領 (4)・#69）。B の検証は §10 の driver 不要計器で行う。
-- **B を駆動した記録（C-2・回転コピー hand・測定）**: `dod_c2_20260810/run.log` `:55` start-pose IK **R: 16 solved / 4 collision-free**・`:60` R chosen q・`:99` **STEP1 R tool err 2.2 mm**・`:355` **STEP2 COMMAND R reached 100.0%**・`:366` R 2.2 mm — 同 record で L は `:51` 0/13 collision-free・`:94` 658.5 mm（記録は判別する）。⇒ 既存 class は C-2 で B を駆動した。**鏡像 hand 後は未測**（AXFIX["R"] が変わった）→ R0。
+- **`solve_ik(t, tgt, …)`** wired `:2036`: scratch MjData 上の 6D DLS。`e = [tgt − pinch(t); 0.6·er]`・**`er = rotvec((RD @ AXFIX[t]) @ Rtᵀ)`**（`:2115`）・`J = [0.5(Jp0+Jp1); 0.6 Jr]`・`dq = 0.5·Jᵀ(JJᵀ + 0.05²I)⁻¹e`（`:2118`）・`|dq| ≤ 0.15`（`:2120-2121`）・300 iter・収束 `pe ≤ 0.002 m`（`:2129`）・`re ≤ re_max`（既定 0.05／aim 0.02 `:887`／per-step 0.30 `:3398,:3411`）。本文に `mj_step` 0（`mj_kinematics/mj_comPos/mj_forward` のみ）。側は `QADR/VADR/PAD/TOOLB/AXFIX[t]` で入る — 側固有の分岐 0。呼び手 = `aim_slot_at` `:854`・START solve `:2569-2632`・STEPS loop `:3143-3978`（module-level）。
+- **`ik()` `:646` は死んでいる**: `\bik\(` = 1 行（def のみ）／陽性対照 `\bpinch\(` = 21 行 / 23 出現。⛔ p0 は B の何かを `ik()` に書かない。
+- servo = position actuator `AIDX[t]`（gain は関節名で決まる `:426-432`・`forcerange/ctrlrange` = URDF 由来 `EFFORT/LIMS` `:433`・両側同じ loop）・home = `d.ctrl[AIDX[t]] = HOME_POSE` 両側 loop `:2505-2507`。cell 構成 = `for tag, sign in SIDES.items()` `:401`・mount `pos=[sign·YOKE_SPREAD, 0, SHOULDER_HEIGHT]` `:409`・arm `:238`（R = `ur15_base_mirrored.xml`・`arm_spec` が armature/damping を注入 `:238-244`）・hand `:419`（R = `GRIP_XML_MIRRORED`）・wrist→hand frame `:420`。identity print `:567-568`。
+- ⚠ **driver は import 即実行**（`:442 m = cell.compile()`・`:1148-1149` cable settle mj_step 2000・`:3143` STEPS loop 全て module-level・`__main__` = comment 1 行 `:48`・guard 0）⇒ **wired の import = wired 実行**（DDR #66 受領 (4)・#69）。B の検証は §10 の driver 不要計器で行う。
+- **B を駆動した記録 2 本（測定）**:
+  - **U0**（C-2・回転コピー hand・driver `93adb43eb7`）: `:55` start-pose IK **R: 16 solved / 4 collision-free**・`:60` R chosen q・`:88` R at rest **touching `L_wrist_3_link`**・`:99` **STEP1 R tool err 2.2 mm**・`:355` **STEP2 COMMAND R reached 100.0%**・`:358` R 実現 **20.1°**（指令 17°）・`:359` ARM-TO-ARM closest **−1.1 mm TOUCHING OR THROUGH**（`:355` の時点）・`:366` R 2.2 mm — 同 record で L は `:51` 0/13 collision-free・`:94` 658.5 mm（記録は判別する）。
+  - **U1**（0.22/45・鏡像 hand）: `:61` start-pose IK **R: 16 solved / 2 collision-free・roll 48.7°**・`:88-89` standing 0.00 mrad・touching nothing・`:100` **STEP1 R 2.1 mm**・`:359` **STEP2 COMMAND R reached 38.0%**「THE MOVE DID NOT FINISH」・`:370` R 11.1 mm at raise・L は `:86/:358` stall。
+  - ⇒ 既存 class は **B を実行した**（C-2 では回転コピー hand で・鏡像 hand では 0.22/45 で）。⚠ **これらの metric（tool err・reached %・collision-free）は hand の chirality に盲目** — U0 は Rs1 の動画が捕らえた回転コピー hand で全 metric を通した（`ur15_gripper_mirror_acceptance.py:20-21` @ `b7a5e39ecf` の defect）⇒ **「B で正しい」の証拠ではない**。**C-2 × 鏡像 hand は未測** → R0（認可 cell = §10）。鏡像 hand で変わったのは **claw の world 幾何**（U2 の 192/192 が測る）であって **AXFIX ではない**（seed `:600` では回転コピー hand と鏡像 hand の AXFIX_R が同一 — §5 AXFIX 行・CC4 導出）。
 
-## 4. 側に依る量の census（閉じた query・母集団 = wired blob 4,022 行 @ `22feba17a6`・単位 = 行）
+## 4. 側に依る量の census（閉じた query・母集団 = wired blob 4,022 行 @ `22feba17a6`・単位 = 行／出現・hit list = verdict §5-E）
 
-- **P1 容器**（`(AXFIX|QADR|VADR|TOOLB|PAD|PADG|PAD1G|CLAWG|ARMG|ARMB|COLFREE|GIDX|AIDX|qt|START|GRASP1|prev|w)\["(L|R)"\]`）= **11 行**／**P2 呼び出し形**（`\w+\("(L|R)"`）= **14 行**／**P3 既定引数**（`=\s*"(L|R)"[,)]`）= **3 行**。陽性対照 = `[t` 形 87 行 / 92 出現（`\[t\]` 厳密 81 / 86）。
-- 分類（全 hit）:
+- **P1 容器** `(AXFIX|QADR|VADR|TOOLB|PAD|PADG|PAD1G|CLAWG|ARMG|ARMB|COLFREE|GIDX|AIDX|qt|START|GRASP1|prev|w)\["(L|R)"\]` = **12 行 / 17 出現**（`:1277 :1283 :1991 :2624 :2625 :2629 :2656 :2659 :2847 :3027 :3303 :3527`）／**P2 呼び出し形** `\w+\("(L|R)"` = **12 行 / 19 出現**（`:1276 :2487 :2624 :2651 :3006 :3040 :3760 :3779 :3780 :3786 :3787 :3940`）／**P3 既定引数** `\w+=\s*"(L|R)"[,)]` = **3 行**（`:229 :1937 :2814`）。prefix 無しの `=\s*"(L|R)"[,)]` は 9（追加 6 = `(t == "R")` の seed offset・下表）。**陽性対照 = 同じ 19 名の `[t`** = 135 行 / 155 出現（厳密 `\[t\]` 127 / 144）。v2 の 11/14/3・87/92 は v1 の 8 名集合と印字 regex の転記から来た誤り（cycle 2 H4）。
+- 分類（全 hit ＋ 手続き 1 行）:
   | 種 | 行 | 分類 |
   |---|---|---|
   | **L の量が B にも使われる（是正対象）** | `:1276` `slot_centre("L") − pinch("L")`・`:1277` `TOOLB["L"]`・`:1283` `AXFIX["L"]` | 姿勢 cap 計器（`attitude_tilt_deg`/`vertical_cap_deg`）→ **D4** |
-  | **L の量が B にも使われる（共有を正当化）** | `:2814` `mouth_clear(t="L")` 既定 → `:2827` `release_ctrl` `:2847` `CLAWG["L"][0],[2]` → `:3137` `RELEASE = release_ctrl()` → `:3141` STEPS の両手へ（row 17 `:2890` "RELEASE","RELEASE"） | 解放指令は **L の爪間隙**から解かれ両手に流れる → **D5′** |
+  | **L の量が B にも使われる（共有を正当化）** | `:2814` `mouth_clear(t="L")` 既定 → `:2827` `release_ctrl` `:2847` `CLAWG["L"][0],[2]`（同腕・対向爪）→ `:3137` `RELEASE = release_ctrl()` → `:3141` STEPS の両手へ（row 17 `:2890` "RELEASE","RELEASE"） | 解放指令は **L の対向爪間隙**から解かれ両手に流れる → **D5′**。⚠ driver の監査は `release_ctrl` を毎 run「NOT exercised」と誤記する（`_known` `:1614`・channel = 直接呼び手 `:1814`・実体は nested `def gap` `:2849` ⇒ U0 `:108`「release opening solved … ctrl 186.7」と `:374`「NOT exercised: ['release_ctrl']」が同 run）— 3 記録が引用（`A_DEPTH_AUDIT_RESULT_20260803.md:20`・`FIX_VERIFY_RESULT_20260803.md:62`・`P5_UR15_CLIP_DETAIL_DESIGN_20260727.md:5127`）。`_known` の訂正は D4 外 → p4 へ 1 行・pB は #69 でこの監査行を証拠に読まない |
+  | **側別の挙動（値でなく乱数列）** | `:921 :3160 :3196 :3228 :3395 :3409` `seed = … + (t == "R")` | R の候補列は L と別 seed — R0 の bar はこれを固定して測る（§10） |
+  | **側別の挙動（値でなく順序）** | `:2568` `_SOLVE_ORDER = … list(SIDES)`・`:2725` `_order` | round 0 で L は home の R に対し・R は既に動いた L に対し filter される（`:2563-2567` p5 −259 の記述）⇒ B の START は L と違う制約下で解かれる。**記録のみ・D1-D7 の外**（`SOLVE_ORDER=R` は p5 −259 の別 court） |
   | L のみの診断（印字） | `:3021-3029` `[rel]` block（`CLAWG["L"]`・scratch で mj_step）／`:2624-2629` L-vs-FINAL-R 診断 | 対象外（B の指令に入らない・記録のみ） |
-  | 両側の対 | `:1991` `ARMG` L∩R／`:2656`+`:2659` `QADR` L→R／`:3303` `_pred_w`／`:3527` `GIDX` dict／`:2487` `pose_menu("L")`,`("R")`／`:2651` `LAST_CLEAR`／`:3006 :3760 :3779-3780 :3786-3787 :3940` | 側別に扱われている |
+  | 両側の対 | `:1991` `ARMG` L∩R／`:2656`+`:2659` `QADR` L→R／`:3303` `_pred_w`／`:3527` `GIDX` dict／`:2487` `pose_menu("L")`,`("R")`／`:2651` `LAST_CLEAR`／`:3040` `grasped("L") and grasped("R")`／`:3006 :3760 :3779-3780 :3786-3787 :3940` | 側別に扱われている |
   | 既定引数（L 既定） | `:229` `arm_spec(tag="L")`・`:1937` `arm_pair_min(ta="L", tb="R")`・`:2814` | `:229/:1937` は両側で明示呼び出し・`:2814` は上の D5′ |
-- ⇒ **B に L の量が入る経路は 2 つ**（cap 計器・解放指令）。v1 の「2 箇所・同一計器内」は query の名前 8 個の産物で誤り（verdict H1）。
+- ⇒ **B に L の量が入る経路は 2 つ**（cap 計器・解放指令）。値でない側非対称（seed・順序）は 2 種・記録のみ。
 
 ## 5. 側に依る量の表（設計の本体）
 
 | 量 | 現行 | B での正しさの根拠（測定・札つき） | 設計 |
 |---|---|---|---|
-| **関節指令 map A→B** | 同じ q（HOME_POSE 1 本・START/STEP は側別に解く） | acceptance `:65` test leg（鏡像腕・右 mount・**左の関節値** → reference の右位置）**48/48・worst 0.0076 mm / bar 1.0 mm**〔@0.22/45〕／negative `:121`（reference の R 式を与える）**0/48・worst 1357.5480 mm**／pZ B1 reference 自体 exact mirror・B2 pZ 自身の FK worst **0.0079 / 0.0074 mm**（record 再 parse の band 0.0013–0.0076 とは別）・B3 Hausdorff 0 × 7 mesh・C2 正式化 = naming-only〔asset 級〕／08-10 record（§3）〔C-2・回転コピー hand〕 | **D1 = identity。符号 vector を置かない。** reference の R 式（pZ 実測: R = −L、**upper_arm/wrist_1 は −L + π**）は **非鏡像機の経路** = UR15-B では **負の対照**（p4 基準 (f) との整合 = この意味で整合）。C-2 では reference 位置が無い（DDR #68・pZ F4）⇒ C-2 の identity は **構成**（`:238/:401/:409/:419`）＋ **R1 の自己鏡像 leg** で立てる |
-| joint limits | `LIM` 共有 `:1250`（URDF・cell_spec `:100`） | 6 range とも対称かつ両 asset で同一（mirrored `:38-58`・stock `:18-38`） | **D6 = 共有は D1 の帰結（対称性に依らない）。** identity-q 鏡像（`A·Rot(n,q)·A = Rot(−An,q)`）では range は **byte 同一**が要件（hand generator `make_ko_mirror.py:16-19` @ `b7a5e39ecf` が明記・hand は非対称 range を byte 同一で持つ）。⚠ acceptance `:214` の `[lo,hi]→[−hi,−lo]` 期待は逆（対称ゆえ今日は落ちない）→ **別 task へ回付**（本 chunk 外） |
-| AXFIX（閉じ軸・接近軸の tool 内表現） | 側ごと測定 `:594-613`・`AXFIX` `:616`（共通 seed q = identity 下で鏡像配置） | 構造 = 側別測定（測定）。AXFIX_L と AXFIX_R の関係は **鏡像 hand では未測**（07-29 §5 の pad 入替・det=+1 は回転コピー hand の値・det は s=a×c ゆえ構成的に +1 で証拠にならない） | **D2 = 側別測定を維持。式で鏡像化しない。** 関係の測定 = R1′（§10）。⚠ AXFIX は直交化していない（a·c = 2e-5 今日）— `|c·a| < 1e-3` assert は **D4 外の提案** |
-| 姿勢指令 (yaw, roll) | 側別符号 `sgn`（`pose_menu` `:2027-2029`・`solve_ik` `:2055`・`:2061`・comment「p5 −167」）= `SIDES` cell_spec `:485` と同じ数（kinonly `:661/:666` は `spec.SIDES[t]` を menu 符号に使う） | `_rdes` `:1329-1334` = Rz(yaw+π/2)·Ry(roll)・`R_DES` `:489-491`。収束時 world の把持三軸 = RD の列（側に依らず・導出・CC4 再導出一致）。**導出**: 指令 pair の関係 = **`RD_R = My·RD_L·Mx`**（接近列は y=0 鏡像・閉じ列は y 鏡像＋反転）・例 (0.3, 0.6): 接近列 (−0.1669, −0.5394, +0.8253) 対 (−0.1669, +0.5394, +0.8253)。x=0 鏡像は **roll ≠ 0 で崩れる**（yaw でない — §5-of-07-29 の「yaw≠0 で NO」は生 entry 入力の検査） | **D3 不変。** 根拠 = **測定された code の規約**（`:2027/:2055/:2061`）。「Rs: hands do not have to mirror … have to clamp」`:904` は p4 の 07-27 docstring（Rs1/Rs2 未分離・custody 不在）、「p5 −167」は code 内参照のみ ⇒ 裁定 custody は p4/p5 への**非 blocking 質問**。「menu が鏡像であるべきか」は p5 と共有の設計問題・本書は触れない |
-| **姿勢 cap 計器** | `attitude_tilt_deg` `:1263-1286`／`vertical_cap_deg` `:1288-1326`: L 固定（`:1276/:1277/:1283`）・menu の**生** (yaw,roll) で評価（L が受けるのは `(−yaw, −roll)`） | 消費 = **print `:2987-2988` のみ**（`vertical_tol_deg(` の呼び出し = blob 0・cell_spec `:829` は cap 無しの interim 5.73）。gate `:3517` は既に側別（`:3446`）。記録の cap は常に 5.73 = 0.10 rad 厳密 ⇒ v_c ≈ 0 が既に示唆（calibration `:1301` 0.5° ⇒ \|v_c\| ≤ 0.0087・cap ∈ [5.24°, 6.23°]）。現行の値 = 「pad が入れ替わらなかった場合の B」= どちらの腕の実姿勢でもない（v_c=0 なら三者一致） | **D4（§6）= 唯一の code 変更・gate-inert。** 将来 r_max 着地で `vertical_tol_deg(r_max, cap)`（cell_spec `:768-787`・第 3 分岐 raise）に入る — その配線は **p5 §6.4j の court・本 chunk 外・/reward-design 対象** |
-| gripper 指令 | `d.ctrl[GIDX[t]]` 0..255 共有 | mirrored hand default joint axis `1 -0 -0`（`:31`）≡ stock `1 0 0`（`:27`）／actuator 同一（`:202` vs `:198`）／192/192（`b7a5e39ecf`）／hand の非対称 range は byte 同一（generator の規則） | **D5 不変** |
-| **解放指令 RELEASE** | `release_ctrl()` `:2827` が L の爪間隙（`mouth_clear()` `:2814`・`CLAWG["L"]` `:2847`・scratch で SETTLE_S 分 mj_step）から解き、両手へ `:3137/:3141` | hand は exact mirror（192/192）ゆえ **間隙→ctrl の関係は構成上同一**（導出）。測定は無い | **D5′ = 共有を維持（正当化つき）**＋ pZ static row（§10 R5: 同じ ctrl での `mouth_clear(L)` と `mouth_clear(R)` の等式）。側別化（scratch 動力学を 2 倍）はしない |
-| home | `HOME_POSE` 1 本（cell_spec `:455`）・servo `:2505-2507` | HOME_POSE_SYMMETRY §1 link frames mirror error 0.0000 mm × 6・§2-§3 mast 距離 両側同値〔**@0.22/45・t42・回転コピー hand**〕／C-2 では未測 | **D6 不変**（C-2 の家 = R1 の HOME_POSE 行で測る） |
-| dynamics | kp/kv 関節名で共有・asset inertial は text 上 mirror（pos x 反転・quat (w,x,−y,−z)・mass/diaginertia 同一 — CC4 全 6 body 確認） | position test は dynamics を見ない（acceptance `:132`・pZ B4） | **D7 = static field 等式（R2）＋ 認可 run の L/R 追従誤差比較（R4・報告のみ・等級は pZ）** |
+| **関節指令 map A→B** | 同じ q（HOME_POSE 1 本・START/STEP は側別に解く） | acceptance `:65` test leg（鏡像腕・右 mount・**左の関節値** → reference の右位置）**48/48・worst 0.0076 mm / bar 1.0 mm**〔@0.22/45〕／negative `:121`（reference の R 式を与える）**0/48・worst 1357.5480 mm**／pZ B1 reference 自体 exact mirror・B2 pZ 自身の FK worst **0.0079 / 0.0074 mm**（record 再 parse の band 0.0013–0.0076 とは別）・B3 Hausdorff 0 × 7 mesh・C2 正式化 = naming-only〔asset 級〕／U0・U1（§3・chirality-blind） | **D1 = identity。符号 vector を置かない。** reference の R 式（pZ 実測: R = −L、**upper_arm/wrist_1 は −L + π**）は **非鏡像機の経路** = UR15-B では **負の対照**（(f) の充足判定 = p4・§1）。C-2 では reference 位置が無い（DDR #68・pZ F4）⇒ C-2 の identity は **構成**（`:238/:401/:409/:419`）＋ **R1 の自己鏡像 leg** で立てる |
+| joint limits・effort | `LIM` 共有 `:1250`・`EFFORT`/`LIMS` 共有（cell_spec `:99-100` = stock `ur15_mj.urdf`）→ 両 actuator の `forcerange/ctrlrange` `:433`・`LIM` の seed/clip `:2092/:2122` | 6 range とも対称かつ両 asset で同一（mirrored `:38-58`・stock `:18-38`） | **D6 = 共有は D1 の帰結（対称性に依らない）。** identity-q 鏡像（`A·Rot(n,q)·A = Rot(−An,q)`・任意の reflection A）では range は **byte 同一**が要件（generator `make_ko_mirror.py:16-19` @ `b7a5e39ecf` が明記・hand は非対称 range を byte 同一で持つ）。⚠ acceptance `:214` の `[lo,hi]→[−hi,−lo]` 期待は逆（対称ゆえ今日は落ちない・`build()` を使う R1 には効かない）→ **p4 へ提案として回付（instrument owner = p0・DDR 項目化は p6）** |
+| AXFIX（閉じ軸・接近軸の tool 内表現） | 側ごと測定 `:594-613`・行 = (c, s, a)・`s = a×c` `:612`・seed q `:600` = `[0,−1.2,1.0,−1.4,−1.57,0]`（fresh MjData ⇒ finger 0）・`AXFIX` `:616` | 構造 = 側別測定（測定）。関係（**導出・CC4 自前 FK・陽性対照 = 07-29 record の 4 数値**）: 同名 pad = 鏡像 ⇒ `c_w^R = Mx c_w^L`・`a_w^R = Mx a_w^L`・`Rt_R = Mx·Rt_L·A`（A = `Rtᵀ·Mx·Rt` = diag(−1,1,1) = generator の実測 A）⇒ `c_l^R = A c_l^L`・`a_l^R = A a_l^L`・**`s_l^R = −A s_l^L`（擬ベクトル・当卓 numpy で恒等式を追認）** ⇒ **`AXFIX_R = diag(1,−1,1)·AXFIX_L·A`**（v2 の `Mx·AXFIX_L·A` は c 行の符号が逆・正しい cell で残差 2.0）。⚠ seed では `AXFIX_L` が符号付き置換で `diag(1,−1,1)·P·A = P` ⇒ **回転コピー hand と鏡像 hand の AXFIX_R は同一** = **AXFIX は hand asset を判別しない**（判別するのは claw の world 幾何 = U2 の 192/192 述語）。直交性: HOME_POSE_SYMMETRY `:54`〔@0.22/45・t42・回転コピー・world・HOME_POSE〕から a·c = 2.0e-5（導出）・seed の composed 値 ≈ 1e-16（CC4 導出）— 「今日」の object は無い | **D2 = 側別測定を維持。式で鏡像化しない。** 関係式の残差 = R1′ の consistency 行・**判別 leg は同名 pad の world 対応**（§10 R1′）。`|c·a| < 1e-3` assert は **D4 外の提案** |
+| 姿勢指令 (yaw, roll) | 側別符号 `sgn`（`pose_menu` `:2027-2029`・`solve_ik` `:2055`・`:2061`・comment「p5 −167」）= `SIDES` cell_spec `:485` と同じ数（kinonly `:661/:666` @ `99b2d7d672` は `spec.SIDES[t]` を使う） | `_rdes` `:1329-1334` = Rz(yaw+π/2)·Ry(roll)・`R_DES` `:489-491`。収束時 world の把持三軸 = RD の列（側に依らず・導出・CC4 残差 5.6e-16 × 79 entry）。**導出**: 指令 pair の関係 = **`RD_R = My·RD_L·Mx`**（接近列は y=0 鏡像・閉じ列は y 鏡像＋反転）・例 (0.3, 0.6): 接近列 (−0.1669, −0.5394, +0.8253) 対 (−0.1669, +0.5394, +0.8253)・閉じ列 (+0.2439, +0.7885, +0.5646) 対 (−0.2439, +0.7885, −0.5646)。**x=0 鏡像は接近列で roll≠0 のとき崩れ・frame 全体では roll=0 でも成り立たない**（`Mx·RD_L·Mx = RD_R·Ry(−2r)·Rz(π)`・c 列） | **D3 不変。** 根拠 = **測定された code の規約**（`:2027/:2055/:2061`）。「Rs: hands do not have to mirror … have to clamp」`:904` は p4 の 07-27 docstring（`66d8b8747d`・Rs1/Rs2 未分離・custody 不在）、「p5 −167」は code 内参照のみ（初出 `fa948b8a53`）⇒ 裁定 custody は p4/p5 への**非 blocking 質問**。「menu が鏡像であるべきか」は p5 と共有の設計問題・本書は触れない |
+| **姿勢 cap 計器** | `attitude_tilt_deg` `:1263-1286`／`vertical_cap_deg` `:1288-1326`: L 固定（`:1276/:1277/:1283`）・menu の**生** (yaw,roll) で評価 = **R が受ける (yaw,roll) の tilt そのもの**（`v_c^R = v_c^L`・`v_a^R = v_a^L` ゆえ・CC4 導出 1.3e-13°）— **欠けているのは L 側**（L が受けるのは `(−yaw, −roll)`）。v2 の「どちらの腕でもない」は回転コピー読み（撤回） | 消費 = **print `:2987-2988` のみ**（`vertical_tol_deg(` の呼び出し = blob 0・cell_spec `:829` は cap 無しの interim 5.73）。gate `:3517` は既に側別（loop `:3420`・ctrl `:3441`・read `:3450`）。記録の cap は常に 5.73 = 0.10 rad 厳密（U0 `:104`・U1 `:105`）⇒ v_c ≈ 0 が既に示唆（calibration `:1301` 0.5° ⇒ |v_c| ≤ sin 0.5° = 0.0087・cap ∈ [**5.23°**, 6.23°]）。⚠ **cap は `GRASP_ATTITUDES`（cell_spec `:688-690`・13 roll × 5 yaw = 65・最小非零 roll 0.10）を歩き、solver は `pose_menu`（`:2027-2031`・11／wide 27・最小非零 roll 0.35／0.20 ⇒ 20.05°／11.46°）を歩き `pose_rd` は任意 roll を通す** ⇒ cap は solver の menu の性質ではない（`:2091`「menu holds 65」は stale）— `vertical_tol_deg` 配線と共に p5 §6.4j へ | **D4（§6）= 唯一の code 変更・gate-inert。** 将来 r_max 着地で `vertical_tol_deg(r_max, cap)`（cell_spec `:768-787`・第 3 分岐 raise）に入る — その配線は **p5 §6.4j の court・本 chunk 外・/reward-design 対象** |
+| gripper 指令 | `d.ctrl[GIDX[t]]` 0..255 共有 | mirrored hand default joint axis `1 -0 -0`（`:31`）≡ stock `1 0 0`（`:27`）／actuator 同一（`:202` vs `:198`）／192/192（U2・C-2 定数）／hand の非対称 range は byte 同一（generator の規則） | **D5 不変** |
+| **解放指令 RELEASE** | `release_ctrl()` `:2827` が L の対向爪間隙（`CLAWG["L"][0],[2]` `:2847`・両手に同じ ctrl を入れ `:2851-2852`・scratch で SETTLE_S 分 mj_step `:2855`・二分法）から解き、両手へ `:3137/:3141` | hand は exact mirror（192/192）・ctrl→間隙 map が依る field（tendon coef/stiffness・equality・spring・actuator）は generator 規則で byte 同一 ⇒ **関係は構成上同一（導出・R2 拡張で text 等式を測る）**。動的な ctrl→間隙の等式は mj_step を要する = R0 と同じ認可 cell。⚠ `mouth_clear` `:2814-2824` は `CLAWG[t][0],[1]` = **同じ pad の 2 geom**（コ字 slot の開口 = 剛体定数）— 解放の量ではない（v2 の R5 はこれを測る行で判別しない・削除） | **D5′ = 共有を維持（正当化つき）**。側別化（scratch 動力学を 2 倍）はしない。記録 = U0 で B へ届いた RELEASE の実効は STEP 7 以前で run が終わるため未観測（T22 `4c2cd5dc77` は鏡像化前 cell） |
+| home | `HOME_POSE` 1 本（cell_spec `:455`）・servo `:2505-2507` | HOME_POSE_SYMMETRY §1 link frames mirror error 0.0000 mm × 6・§2-§3 mast 距離 両側同値〔**@0.22/45・t42・回転コピー hand**〕／**C-2 では U2 が wrist_3 frame の鏡像を HOME/alt の 2 pose で示す**（chiral hand が wrist_3 に掛かり world 点集合が等 q で鏡像 ⇒ wrist_3 frame 鏡像・導出）— **shoulder…wrist_2 の link 群と他の q は C-2 で未測** | **D6 不変**（C-2 の家 = R1 の HOME_POSE 行で測る） |
+| dynamics | kp/kv 関節名で共有（`:426-432` loop）・armature/damping = `arm_spec` 注入 `:238-244`（両側）・asset inertial は text 上 mirror（pos x 反転・quat (w,x,−y,−z)・mass/diaginertia 同一 — CC4 全 6 body） | position test は dynamics を見ない（acceptance `:132`・pZ B4）。iquat は **text 精度で 1e-12 に届かない**（arm 10 桁 vs 6 桁 = 5.6e-11・hand 8 桁 vs 6 桁 = 2.1e-9・CC4 導出） | **D7 = asset 級 field の text 等式（R2・field 別 bar）＋ driver 注入級は loop 構成の等式（text 引用・実測は #69 run のみ）＋ 認可 run の L/R 追従誤差比較（R4・報告のみ・等級は pZ）** |
 
 ## 6. D4 の仕様（p0 向け・結果形・gate-inert）
 
 - **対象**: wired `attitude_tilt_deg` `:1263-1286` と `vertical_cap_deg` `:1288-1326` @ `22feba17a6`（内容で特定: `v = slot_centre("L") - pinch("L")` を含む関数／`_spec.GRASP_ATTITUDES` を走査し `min(tilted)` を返す関数）。**print `:2987-2988`**（`# p11 -137 / p5` `:2985` — 本 D4 は当卓自身の 07-28 計器〔`2a08328dee`・`c9b5c3abdf`・`4c2ba02697`〕の側固定を正す）。
 - **変更（結果形）**:
   1. `attitude_tilt_deg(t, yaw, roll)`: `v = slot_centre(t) − pinch(t)`・`v_tool = xmat[TOOLB[t]]ᵀ v`・`world = (_rdes(yaw, roll) @ AXFIX[t]) @ v_tool`（転置注記 `:1279-1282` 不変）。
-  2. `vertical_cap_deg()`: 各 `t ∈ SIDES` について **その側が実際に受ける姿勢** `(SIDES[t]·yaw, SIDES[t]·roll)`（`SIDES` は cell_spec `:485` を driver が既に import — **pose_menu/solve_ik の literal は触らない**）で `upright_t`／`tilted_t` を作り、**両 calibration raise（`:1301` upright ≤ TILT_CAL_DEG／`:1307` min(tilted) ≥ TILT_CAL_DEG）を側ごと**に通し、`cap_t = min(tilted_t)`（**入力側で選ぶ** `abs(r) ≥ 1e-9` `:1306`・出力選択は `:1314-1322` の bug）。返り値 = `min_t cap_t`（共有 `VERTICAL_TOL_DEG` は側ごとの gate `:3517` に当たるため識別性は両側で要る — min が正しい集約・鏡像なら no-op）。
-  3. print `:2987-2988` に **両側の cap と採用 min**（＋ `VERTICAL_TOL_DEG` との並記）。
+  2. `vertical_cap_deg()`: 各 `t ∈ SIDES` について **その側が実際に受ける姿勢** `(SIDES[t]·yaw, SIDES[t]·roll)`（`SIDES` は blob `:158` で import 済 — **pose_menu/solve_ik の literal は触らない**）で `upright_t`／`tilted_t` を作り、**両 calibration raise（`:1301` upright ≤ TILT_CAL_DEG／`:1307` min(tilted) ≥ TILT_CAL_DEG）を側ごと**に通し、`cap_t = min(tilted_t)`（**入力側で選ぶ** `abs(r) ≥ 1e-9` `:1306`・`:1314-1322` の comment は修正済の出力選択 bug の記録）。返り値 = `min_t cap_t`（共有 `VERTICAL_TOL_DEG` は側ごとの gate `:3517` に当たるため識別性は両側で要る — min が正しい集約）。
+  3. print `:2987-2988`: **既存 prefix `[steps] vertical check: allowance {tol} deg, cap {min} deg` を byte 互換で残し**、末尾に `(L {cap_L} / R {cap_R})` を追記（既存の逐語引用 4 箇所 — LEDGER row 53・台帳 `:10687/:12915`・`PB_T42_FOUR_READINGS_LOGANALYST_20260729.md:121` — が読めるまま）。⛔ 新しい語に `nan|inf|error|fail|warn` の部分文字列を含めない（pB `log-analyzer/SKILL.md:95` は substring grep・「provenance」は nan を含む）。RUN_METRICS 不変。
 - **不変**: `solve_ik`／`pose_menu`／`_rdes`／`aim_*`／`release_ctrl`／servo／`R_DES`／`GRASP_ATTITUDES`／`LIM`／`AXFIX`／`SIDES`。**制御行の変更 0・file = wired 1 本**（cell_spec 不触・`vertical_tol_deg` の呼び出し形不変）。
-- **効果の正直**: gate-inert（消費 = print）。数値効果 = **0 iff v_c = 0**（記録が示唆）。⚠ **起動時 abort 面が両側に広がる**: 2 つの calibration raise は 08-02 に実際に発火した（`order_test_logs/order_L.txt:96`・`order_R.txt:96`・`round_by_round_LOUD.txt:142`「the attitude with zero roll comes out … off vertical」）。⇒ **cap 計器の abort は controller の verdict ではない**（計器が live の jaw 状態を読む）。pZ R3 で両側極値を static に先に測る。
+- **効果の正直**: gate-inert（消費 = print）。**数値効果 = 0 iff v_c ≥ 0**（wired の規約 c = pr − pl・v = slot − pinch で `min(cap_L, cap_R)` = cap_R = 現行 when v_c > 0／= cap_L = 現行 − 2|v_c| when v_c < 0）。記録（5.73 厳密）は |v_c| ≲ 1e-4 を示唆。⚠ **起動時 abort 面が両側に広がる**: 2 つの calibration raise は 08-02 に実際に発火した（`order_test_logs/order_L.txt:96`・`order_R.txt:96`・`round_by_round_LOUD.txt:142`「the attitude with zero roll comes out … off vertical」）— **その原因は記録に無い**（`git grep` 0・08-02→08-10 の commit に cap の名は無い・08-10 は 0.00 で通過）。⇒ **cap 計器の abort は controller の verdict ではない**（計器が live の jaw 状態を読む）。R 側の abort は STEP1 と STEP2 の間で先に落ちる — **L stall の不在は進捗ではない**。pZ R3 で両側極値を static に先に測る。
 - **名の区別**: `P4_ROLL_CAP`（`:912-918`・env hook・menu を |roll| で絞る）は別物・不触。
-- **期待（導出・pZ R3 が決める・両結果の帰結）**: tilt = acos(−world_z)・world_z = −v_c·sinρ + v_a·cosρ（yaw 非依存）。**前提 3 つ**（① 閉じ軸の関係 ② 接近軸の関係 ③ 爪集合＝mouth の鏡像＋読み取り時の指状態が両側同じ）が鏡像 hand で成り立てば両腕の実 tilt は entry ごとに一致 ⇒ D4 は数値 no-op（構造は正しい）。成り立たなければ D4 が数値を直す。**どちらでも D4 は正**。
+- **期待（導出・pZ R3 が決める）**: tilt = acos(−world_z)・world_z = −v_c·sinρ + v_a·cosρ（yaw 非依存）。**前提 3 つ**（① 閉じ軸の関係 ② 接近軸の関係 ③ 爪集合＝mouth の鏡像＋読み取り時の指状態が両側同じ）が成り立てば `v_c^R = v_c^L`・`v_a^R = v_a^L`。**L は ρ = −r・R は ρ = +r を受ける ⇒ `tilt_L(y, r) = tilt_R(y, −r)`・同じ entry では両腕の tilt は ≈ 2·v_c だけ違う（calibration 0.5° の下で ≤ 1.0°）・一致するのは v_c = 0 のときだけ**（対称 finger 状態では 2f85 の Rz(π) linkage 対称性で v_c ≡ 0 ⇒ 記録の 5.73 一致はこの場合）。v2 の「entry ごとに一致」は v1 の pad 入替結論の残存（撤回・cycle 2 H2）。**どちらでも D4 は正**（構造 = 側別・数値 = R3 が決める）。
+- **識別記録の print（§7 提案）は Rs1 の §1 回答に条件付け**: (A) を採るなら D4 の hunk に畳み §13 (b) の許容 = 2 def ＋ 2 Expr（両方名指し）／採らないなら削除。採否 = Rs1（p4 経由・p4 の設計判断ではない）。
 
 ## 7. UR15-B controller の識別記録（created-object の類比・Rs1「作成」への答えの形）
 
-| 構成要素 | B 側の instance | どこで測られたか | 残り |
+| 構成要素 | B 側の instance（wired @ `22feba17a6`） | **B で実行された記録（chirality-blind）** | **B で正しい（open・§10）** |
 |---|---|---|---|
-| 解 | `solve_ik("R", …)`：`QADR["R"]/VADR["R"]/PAD["R"]/TOOLB["R"]` `:351-371`・`AXFIX["R"]` `:594-616`・`sgn=+1` = `SIDES["R"]` | 08-10 C-2 record（回転コピー hand）§3 | **R0**（鏡像 hand 後） |
-| 目標 | `GRASP1["R"]` `:1149`・STEPS の R 列（`:2880-2890`）・`fix_x=GR[0]` `:922` | 設計定数（cell_spec） | — |
-| servo | `AIDX["R"]` `:349`・kp/kv 関節名で共有・`HOME_POSE` 共有・`LIM` 共有 | 08-10 record（B が home→STEP2 到達）・range byte 同一（測定） | R2 |
-| 指 | `GIDX["R"]` `:350`・`OPEN/CLAMP/RELEASE` 共有（RELEASE は L 由来・D5′） | 192/192・生成規則 | R5 |
-| asset | `ur15_base_mirrored.xml` @ `6a542f45dd`（UR15-B）＋ `_ur15_2f85_koshape_actuated_mirrored.xml` @ `b7a5e39ecf` | acceptance 48/48・pZ B1-B3・192/192 | R1・R1′ |
-| 提案（p4 採否・D4 と別の一語） | identity print `:567-568` の隣に **「controller: existing class on both arms; per-side AXFIX/QADR/AIDX; sgn = SIDES[t]; design = P11_UR15B_CONTROLLER_DESIGN_20260913.md @ <commit>」1 行** | — | — |
+| 解 | `solve_ik("R", …)`：`QADR["R"]` `:451`・`VADR["R"]` `:452`・`PAD["R"]` `:453`・`TOOLB["R"]` `:471`・`AXFIX["R"]` `:594-616`・`sgn=+1` = `SIDES["R"]` `:2055` | U0（C-2・回転コピー hand）・U1（0.22/45・鏡像 hand）§3 | **R0**（C-2 × 鏡像 hand・認可 cell） |
+| 目標 | `GRASP1["R"]` `:1249`・STEPS の R 列（`:2872-2892`）・`fix_x=GR[0]` `:922` | 設計定数（cell_spec） | — |
+| servo | `AIDX["R"]` `:449`・kp/kv 関節名で共有・`HOME_POSE` 共有・`LIM`/`EFFORT` 共有 | U0/U1（B が home→STEP2 へ動いた）・range byte 同一（測定） | R2（asset 級）・R4 |
+| 指 | `GIDX["R"]` `:450`・`OPEN/CLAMP/RELEASE` 共有（RELEASE は L 由来・D5′） | 192/192（U2・C-2 定数）・生成規則 | R2 拡張 |
+| asset | `ur15_base_mirrored.xml` @ `6a542f45dd`（UR15-B）＋ `_ur15_2f85_koshape_actuated_mirrored.xml` @ `b7a5e39ecf` | acceptance 48/48〔0.22/45〕・pZ B1-B3・U2 192/192〔C-2〕 | R1・R1′ |
+| 提案（採否 = Rs1・§1 (A)） | identity print `:567-568` の隣に **「controller: existing class on both arms; per-side AXFIX/QADR/AIDX; sgn = SIDES[t]; design = P11_UR15B_CONTROLLER_DESIGN_20260913.md @ <commit>」1 行**（語は §6-3 の禁則に従う） | — | — |
 
 ## 8. `/diffik-trajectory` 出力（brief `:59` の設計ゲート・本設計は軌道を変えない）
 
@@ -103,54 +115,61 @@
 ## 軌道設計: UR15-B controller（既存 class の B 側導出）
 ### 移動量
 solve_ik = scratch 上の反復解（軌道でない）: |dq| ≤ 0.15 rad/iter・300 iter・pe ≤ 0.002 m。実軌道 = START ramp（RAMP :2710・線形）で q を servo 目標へ。D1-D7 のいずれも軌道・step size・補間を触らない。
+実効移動量 = N/A（軌道不変・ramp = START_RAMP_S/timestep :2710）
 ### 補間方式
 position servo への線形 ramp（現行・不変）。one-shot 目標なし。指 = tendon actuator 0..255（不変）。
 ### DLS確認
 λ = 0.05（:2118）・joint clamp 0.15 rad/iter・gain 0.5・回転重み 0.6 — 側に依らない scalar ⇒ B でも同値（不変）。
 ### THREAD固有リスク
-(1) 関節 sign map を「作る」誘惑（reference の R 式）= 負の対照 0/48。(2) 鏡像述語を task 空間で書くと正しい controller が落ちる。(3) dynamics 未検証（R2/R4）。(4) 識別性の「無い」検査（det=+1・限界 leg・cap 一致）を証拠に数えない。
+(1) 関節 sign map を「作る」誘惑（reference の R 式）= 負の対照 0/48。(2) 鏡像述語を task 空間で書くと正しい controller が落ちる。(3) dynamics 未検証（R2/R4）。(4) 識別性の「無い」検査（det=+1・限界 leg・cap 一致・AXFIX 関係・mouth_clear）を証拠に数えない。
 ```
 
 ## 9. 命令空間の明記（p4 基準 (e)）
 
-**関節空間 = 真**（同じ q → 鏡像姿勢・acceptance test leg・R1）／**task 空間 = 偽**（同じ target → 鏡像軌道ではない・鏡像運動には鏡像 target が要り、姿勢は D3 で y=0 面鏡像ゆえ x=0 面では鏡像にならない）。pZ 訂正の durable = 台帳 §1401 `:46790`（m-p18-281）・§1403（m-p18-282）。
+**関節空間 = 真**（同じ q → 鏡像姿勢・acceptance test leg・R1）／**task 空間 = 偽**（同じ target → 鏡像軌道ではない・鏡像運動には鏡像 target が要り、姿勢は D3 で y=0 面鏡像ゆえ x=0 面では鏡像にならない）。pZ 訂正の durable = 台帳 §1401 `:46790`（m-p18-281）・§1403 `:46804`（m-p18-282）。
 
 ## 10. pZ へ（rows は提供・等級と bar の最終は pZ の court・各 row に計器／object／認可状態）
 
+**計器の実行状態（全 row 共通）**: clean worktree @ pin（`ur15_gripper_mirror_acceptance.py` @ `b7a5e39ecf`・`ur15_mirror_acceptance.py` @ `38678f5946`・`ur15_cell_spec.py` @ `0f6b4a733e`）・env override（`YOKE_SPREAD_OVERRIDE`/`TILT_DEG_OVERRIDE` cell_spec `:368/:384`）未設定・**leg record に mounting 値・env（python/mujoco 版）・commit を印字**。両 script は共有 tree で dirty（formatter）— pZ は点検せず clean checkout を使う。R1 の回転は body `xmat`（mesh geom の `geom_xmat` は主軸で reframe される `ur15_gripper_mirror_acceptance.py:93-97`）。AXFIX 相当の seed = wired `:600` の literal・finger 0（fresh MjData と同じ）。
+
 | row | 内容 | 計器 / object | 認可状態 | 提供 bar |
 |---|---|---|---|---|
-| **R0** controller | `solve_ik(t="R")` が STEPS の R 目標（`:2880-2890` の R 列）で L と同じ bar（pe ≤ 0.002・re ≤ re_max）で収束・負の対照 = R 式 seed | solver を **隔離 harness**（`solve_ik`＋依存を copy）に載せ、composed model（下の builder）で評価 | ⚠ **class 判定 = p4/pZ**（driver 不実行・mj_step 0 だが driver 由来 code）。代替 = #69 run 内で測る（prior = 08-10 record） | 収束率 L と同等・0 収束なら §11 STOP |
-| **R1** 腕の自己鏡像（C-2） | q ∈ {HOME_POSE, reference on-yoke 24 pose, in-limit 乱数 M≥24} で `p_R(q) = Mx·p_L(q)`・`R_R(q) = Mx·R_L(q)·Mx`（各 link・tool body）。負の対照 = `q_R = R式(q_L)` | `ur15_mirror_acceptance.py::build()` @ `38678f5946`（腕のみ・mount は cell_spec から live import = C-2 既定・driver 不要） | mj_step 0・既存計器・pZ が 08-10 に隔離 copy で走らせた class（DDR #68 記載）⇒ **run 認可不要**（pZ 自身の判定） | ≤ 1e-3 mm・≤ 1e-6 rad。⚠ pZ PREREG `:28` の dead query (b) は **kinonly cell（stock arm 両側）**での測定で当たらない（本 builder は鏡像 asset を載せる・07-29 §1 が同形で 0.0000 mm） |
-| **R1′** 構成（hand-on-arm） | AXFIX 相当（閉じ軸・接近軸の tool 内表現）を両側で測り、関係 `AXFIX_R = Mx·AXFIX_L·A_h`（CC4 導出）と pad 名の対応・tool frame の共役を確認 | `ur15_gripper_mirror_acceptance.py::build_side()` @ `b7a5e39ecf`（**wrist→hand frame `acc.R_TOOL` = wired `:420` と同一式**〔`ur15_mirror_acceptance.py:56-57`〕・両側・driver 不要） | 同上 | 関係式の残差 ≤ 1e-6 |
-| **R2** 動力学 field | 対応 body/joint/actuator の `body_mass`・`body_inertia`（共役後）・`jnt_range`・`dof_armature`・`dof_damping`・`actuator_gainprm/biasprm` | 単体 compile（両 asset）＋ composed model | 同上 | int/range = 厳密・共役 float ≤ 1e-12 相対（pZ B3 6.7e-16） |
-| **R3**（D4 着地後・p0 受入項目でもある） | 両側の実姿勢での entry ごと tilt・side ごとの v_c・cap 前後・両 calibration 極値（static）・`min_cap` と `VERTICAL_TOL_DEG` の並記。**selector = roll** | 隔離 harness（`attitude_tilt_deg`/`vertical_cap_deg`＋`_rdes`＋AXFIX 相当）on composed model | 同上 | 一致 ≤ 1e-6 deg なら D4 は数値 no-op（構造のみ）／不一致なら D4 が値を直す |
-| **R5** 解放指令 | 同じ ctrl での `mouth_clear(L)` と `mouth_clear(R)`（爪間隙）の等式 | composed model・static（指 q を同じに置く） | 同上 | ≤ 1e-6 m |
-| **R4** 認可 run | STEP ごとの tool 位置/回転誤差 L vs R・env 版の pin（p4 09-13 節 5: env_isaaclab7 = Newton 1.5.1 / mujoco 3.11.0 @ 09-10） | #69 の run 自身（RUN_METRICS.json・pB/pC レグ実在） | **#69 の中のみ**（Rs1） | 報告（等級は pZ） |
+| **R0** controller（**B で正しい**の唯一の判別 leg） | `solve_ik(t="R")` の copy が STEPS の R 目標（`:2872-2892` の R 列）に収束するか。**収束のみ**（1 腕 model では `other=`/column/path の clearance が空虚 = class test）。harness = `solve_ik`＋依存（`pinch`・`_rdes`・`pose_menu`・`_wrap`・`AXFIX` はその model で再測）を **scratch MjData** で・`other=None`・`near=None`・**`tries=None`（full menu）・候補 index ごと同一 seed（両側）** | `build_side()` @ `b7a5e39ecf` で組む composed model（UR15-B ＋ 鏡像 hand・C-2 定数）／L 側は同じ builder の stock 組 | ⚠ **class = KINONLY 級の新計器 = Rs1 認可（p4 経由・先例 m-p18-215／DDR #66 受入規則 D-2）**。static-class の論拠（pZ が添える陽性対照）: `mj_step` = 0 by construction（`solve_ik` 本文 `:2036-2135` に 0）・driver family の import 0（import/subprocess/exec/runpy 横断）。decider = **Rs1**（p18 routing・p4/pZ は class を決めない）。**認可されない枝**: R0 は pre-#69 chain から外れ **R4 級の報告**に格下げ・立つのは static rows ＋ 2 prior（U0・U1・共に chirality-blind）・#69 との循環（controller 完成 → legs → run／R0 は run の中でしか測れない）は **Rs1 が断つ** | **「L が収束し R が収束しない target 行 = 0」**（同 seed・同候補 index・pe ≤ 0.002・re ≤ re_max）・**収束 0 行なら §11 STOP** |
+| **R1** 腕の自己鏡像（C-2） | q ∈ {HOME_POSE, reference on-yoke 24 pose（JSON sha256 `20ac0935c707757c…`・1 箇所を pin／copy は p4 へ提案）, in-limit 乱数 M≥24（**R 式の不動点 q₁≡q₃≡π/2・q₀,₂,₄,₅≡0 の近傍を除外**）} で `p_R(q) = Mx·p_L(q)`・`R_R(q) = Mx·R_L(q)·Mx`（各 link・tool body・body xmat）。負の対照 = `q_R = R式(q_L)`（margin: HOME 664.70 mm・reference 24 pose min 357.68 mm・乱数 24 draw min 51.3 mm — CC4 導出・mount 不変）。**R1 は hand を語らない**（腕のみ builder） | `ur15_mirror_acceptance.py::build()` @ `38678f5946`（腕のみ・mount は cell_spec から live import = C-2 既定・driver 不要・JSON 不要） | mj_step 0・既存計器・pZ が 08-10 に隔離 copy で走らせた class（DDR #68 記載）⇒ **run 認可不要**（pZ 自身の判定） | ≤ 1e-3 mm・≤ 1e-6 rad。⚠ pZ PREREG `:28` の dead query (b) は **kinonly cell（stock arm 両側）**での測定で当たらない。limit leg `:214` は述語が逆・非判別（M13）— cite しない |
+| **R1′** 構成（hand-on-arm・**hand asset の判別 leg**） | (a) **判別**: 同名 pad/claw の world 対応 `|Mx·p_L(name) − p_R(name)| ≤ 1e-9 m` at equal q（U2 の 192/192 述語 `run_leg` `:109-141`）・負の対照 = **stock hand on UR15-B**（期待 98.6 mm・回転コピー defect）(b) **consistency**: `AXFIX_R = diag(1,−1,1)·AXFIX_L·A`・`A = Rtᵀ·Mx·Rt`（seed `:600`・finger 0） | `build_side()` @ `b7a5e39ecf`（両側・driver 不要・`acc.R_TOOL` = wired `:420`） | 同上（既存計器） | (a) ≤ 1e-9 m・負の対照 ≥ 10 mm／(b) 残差 ≤ 1e-12 |
+| **R2** 動力学 field（**asset 級**） | 対応 body/joint の `body_mass`・`body_inertia`（exact）・`body_ipos`（Mx・exact）・`body_pos`（Mx・exact）・`body_quat`（Mx·R·Mx）・`body_iquat`・`jnt_range`/`jnt_axis`（exact）・`geom_size`（exact）・**hand の** `actuator_gainprm/biasprm`・`tendon_stiffness/damping/range`・tendon coef（`wrap_prm`）・`eq_type/eq_data/eq_solref/eq_solimp`・`jnt_stiffness`・`qpos_spring`・pad `geom_solref/solimp` | 単体 compile（両 asset）＋ `build_side` composed model | 同上 | int/range/exact 列 = 厳密／`body_quat` ≤ 1e-12／`body_iquat` ≤ 1e-8（hand）・≤ 1e-10（arm）（text 桁数の帰結・pZ B3 の 6.7e-16 は body quat と mesh）。**driver 注入級**（arm actuator `:426-433` の kp/kv/`forcerange/ctrlrange`・`arm_spec` の armature/damping `:238-244`）は計器の model に無い — **loop 構成による等式として text 引用**・実測は #69 run のみ（R4） |
+| **R3**（D4 着地後・p0 受入項目でもある） | pZ の **独立再導出**（D-2 形: 自前の tilt 式 = `_rdes` の定義から・AXFIX 相当は pZ 自身が composed model で測る・**wired の行は text 引用のみ・実行しない**）と着地後の print を text 対 text で照合。rows: (i) **対称 finger 行**（no-op 検査: 両側 cap = 現行 = 5.73 を 1e-6° で）(ii) **非対称 finger 行**（両 hand の `right_spring_link_joint` = 0.3・left = 0）: (a) 現行式（生 r・L data）== tilt_R(+r) ≤ 1e-6° (b) tilt_L(−r) == v_c→−v_c の式 (c) tilt_L − tilt_R = 2·v_c ≤ 1e-6° (iii) 両 calibration 極値（static）・`min_cap` と `VERTICAL_TOL_DEG` の並記。**selector = roll**。acos の float64 床 8.1e-7°（r=0 entry）注記。live 状態（OPEN・START 後・settle 後）は run のみ | composed model（`build_side` 両側） | pZ 自前の再導出 = 既存 class（wired 実行 0） | (i) 一致 ≤ 1e-6°／(ii) 3 述語 ≤ 1e-6°（不一致なら D4 の側輸送が誤り） |
+| **R4** 認可 run | STEP ごとの tool 位置/回転誤差 L vs R・driver 注入級 field の実測・env 版の pin（p4 09-13 節 5: env_isaaclab7 = Newton 1.5.1 / mujoco 3.11.0 @ 09-10） | #69 の run 自身（RUN_METRICS.json・pB/pC レグ実在） | **#69 の中のみ**（Rs1） | 報告（等級は pZ） |
+- ~~R5~~ = 削除（`mouth_clear` は剛体定数・判別しない — cycle 2 H8）。D5′ の text 等式は R2 の hand 列で測る。
 - ⛔ task 空間で「同じ target 系列 → 鏡像軌道」と書かない（§9）。
 
 ## 11. STOP 条件（class の限界・§0）
 
 - R1 が bar を超えて落ちる（同じ q で鏡像にならない）→ built cell が #68 の premise を実現していない = premise 側 → STOP → p4 → Rs1。
-- R0 で `solve_ik` が B の目標に収束しない（L の鏡像 target では収束）→ class が B を表現できない → STOP-and-report（method swap しない）。
+- R1′ (a) が落ちる（同名 pad が鏡像でない）→ hand asset 側 → p0 の 08-10 正式化へ差し戻し（controller の問題ではない）。
+- R0 で `solve_ik` が B の目標に収束しない（L は収束）→ class が B を表現できない → STOP-and-report（method swap しない）。
 - D4 以外に「B のために」制御行を触る案 → 本書の外 = 新しい一語。
 
 ## 12. 当卓が測っていないもの（限界を書いた質問）
 
-1. §5 姿勢行・§6 期待の算術は **導出**（`_rdes`/`pose_menu`/`_measure_axfix` の定義から・CC4/CC6 が独立に同値を再導出）— 測定は pZ R1′/R3。当卓は run 認可を持たず FK 評価も実行していない。
-2. 鏡像 hand での AXFIX_L/AXFIX_R の関係・v_c の符号 = 未測（R1′/R3）。dynamics = text 上のみ（R2）。
-3. 09-07 の dirty WIP の author・意図 = 不明（AST で制御 13 def 同一まで）→ p18 へ照会（着地条件）。
-4. DoD run 2 本の **STEP2 L stall**（mast band `:2189-2190` kickoff）は L 腕の事象・本書の対象外。D4 は stall に触れない。
+1. §5 姿勢行・AXFIX 行・§6 期待の算術は **導出**（`_rdes`/`pose_menu`/`_measure_axfix` の定義から・CC4 の自前 FK と当卓の numpy 恒等式検査）— 測定は pZ R1′/R3。当卓は run 認可を持たず mujoco FK も実行していない。
+2. 鏡像 hand での v_c の符号・大きさ = 未測（R3）。dynamics = text 上のみ（R2）。
+3. 09-07 の dirty WIP の author・意図 = 不明（AST で制御 13 def 同一まで）→ p18 へ照会（着地条件・§13）。
+4. DoD run 2 本の **STEP2 L stall**（mast band `:2189-2190` kickoff）は L 腕の事象・本書の対象外。D4 は stall に触れない。U1 の L stall も同じ。
+5. `_gen/_steps_cell_full.xml` = **不使用**: (a) pin commit `22feba17a6`（09-05 10:57）より古い（08:23）(b) 両 hand の mesh が同じ bare filename の relative 参照（`file="spring_link.stl"` ×2・`meshdir` 無し）= standalone load で鏡像が失われる (c) driver の import 毎に上書き。⚠ pZ への hazard: `_gen/` の file は run で消える。
+6. 08-02 の calibration abort の原因 = 未記録（§6）。
 
 ## 13. DoD と受入（結果形）
 
-- **設計 chunk**: v2 bank ＋ cycle-2 五体 PASS ＋ **pre-check ≠ BLOCK** ＋ p4 受入の一言 ＋ Rs1 の問い（§1）の回答（設計は回答を待たずに進む・「作成」の充足宣言だけが待つ）。
-- **p0（D4）**: (a) 変更 file = wired 1 本・base = `22feba17a6` の clean worktree・hunk は D4 の 2 関数＋print のみ (b) **module 全体**の正規化 AST（import alias 順・f-string 分割を正規化）が blob と一致（許容差 = `attitude_tilt_deg`・`vertical_cap_deg` の 2 def ＋ print の Expr 1 — 陽性対照 = literal 1 反転で検出） (c) `attitude_tilt_deg(t, …)` が side 引数を取り `vertical_cap_deg` が両側で評価し min を返す (d) print に両側 cap（観測は R3 の harness で・driver 実行ではない） (e) hash = function ＋ commit・pin は内容 (f) run 0 (g) 08-02 abort 先例の注記。
-- **pZ**: R0-R5 の rows（court で確定）。
-- **chain**: D4 着地 ＋ R1/R1′/R2/R3/R5 通過 ＋ R0 の disposition — **#69 の充足宣言は p4（Rs1 認可）・本書は式を置かない**。RUN_METRICS.json・pB/pC レグは #69 run 時に実在（09-05 E1・p4 09-13 節）。
+- **設計 chunk**: v3 bank ＋ **cycle-2 verdict（FAIL・上限）の処置を p4 が決める**（v3 を第 3 cycle なしで消費／第 3 cycle 認可）＋ pre-check ≠ BLOCK（cycle 2 = WARN）＋ p4 受入の一言 ＋ Rs1 の問い（§1）の回答（設計は回答を待たずに進む・「作成」の充足宣言だけが待つ）。
+- **p0（D4）**: (a) 変更 file = wired 1 本・base = `22feba17a6` の clean worktree・hunk は D4 の 2 関数＋print のみ（§1 (A) 採用時は ＋ identity print 1 Expr） (b) **述語（逐語）**: base = blob `75eefef4e27e`・正規化 N1 = import alias の sort・N2 = 隣接 Constant の JoinedStr merge・**N3 = FormattedValue 無しの JoinedStr ≡ Constant**・import は **名前集合で比較・削除不可**・許容差 = {`FunctionDef attitude_tilt_deg`, `FunctionDef vertical_cap_deg`, `Expr print`（先頭 Constant が `[steps] vertical check` で始まる）}（(A) 採用時は Expr 2・両方名指し）・**受入記録に対照 3 本**: literal 反転（`:2118` 0.05→0.06）→ FAIL／mock-D4 → PASS／mock-D4 ＋ stray print 編集 → FAIL（CC5 `ast_pred.py` で 3 本とも確認済） (c) `attitude_tilt_deg(t, …)` が side 引数を取り `vertical_cap_deg` が両側で評価し min を返す (d) print に両側 cap（§6-3 の prefix 互換・禁則）(e) hash = function ＋ commit・pin は内容 (f) run 0 (g) 08-02 abort 先例の注記。
+- **着地順**: (1) p0 = worktree @ `22feba17a6` で D4 → commit → 述語（許容集合）(2) 09-07 WIP は **merge しない** — p18 が指名する owner が **D4 着地後に再生成**（formatter ＋ F541 ＋ 未使用 import の autofix）・述語 base = D4 commit・許容 = ∅（N1-N3 ＋ import 集合 − 名指しの 6 名）(3) WIP が先に着地したら base を WIP commit に再 pin し対照 3 本を再走してから p0 が始める (4) HEAD blob == pin は本日のみ。
+- **pZ**: R0-R4（court で確定）。
+- **chain**: D4 着地 ＋ R1/R1′/R2/R3 通過 ＋ R0 の disposition（Rs1） — **#69 の充足宣言は p4（Rs1 認可）・本書は式を置かない**。RUN_METRICS.json・pB/pC レグは #69 run 時に実在（09-05 E1・p4 09-13 節）。
 
 ## 14. gate 記録
 
-- **[TASK] L=L3（自己申告）** | node = `T-ROOT-Kinematic-Pin-Complete-Removal-20260719` の下の sub-court（p4 の node・当卓 node なし・manifest `:149`）／関連 `T-ROOT-C3C5-Port-To-Current-Substrate-20260809`。
+- **[TASK] L=L3（自己申告）** | node = `T-ROOT-Kinematic-Pin-Complete-Removal-20260719` の下の sub-court（p4 の node・manifest `:149`）／関連 `T-ROOT-C3C5-Port-To-Current-Substrate-20260809`。⚠ **DDR #71**（LEDGER `:175`: 卓単位 task は「file を作る・共有面を変える」もののみ node 化・都度 Rs1 の作成承認・p6 は判定しない）: 本 chunk は file を作る卓 task。読み = p4 node の chain 内 step（08-10 の p0 正式化と同形）。**境界に迷う ⇒ 当卓は決めない・p4 経由で Rs1 の一語**。
 - **[L-TRIAGE] stage1**:
   ```yaml
   L_TRIAGE: {self_declared: L3, auto_escalated: L3, final: L3}
@@ -161,8 +180,23 @@ position servo への線形 ramp（現行・不変）。one-shot 目標なし。
     step_4_skill_variant: N/A
   notification: {escalated: false, message: "self L3 = auto L3", justification_required: false}
   ```
-  `[L-TRIAGE RESULT] final_L: L3 / confidence: HIGH / evidence_summary: brief :59（制御設計 = L3＋設計ゲート＋pre-check）・新規 file >200 行 / required_gates: [DoD 宣言, pre-mortem(§11-12), handoff, 5 体事前 debate, /diffik-trajectory(§8), /pre-check, 層5(post-change・D4 着地後に owed)] / status: READY_FOR_CHECK`
-- **[DEFER-RECON]**: #68 = premise（Rs1 裁定済・spec 未反映は DoD/run を gate し設計を gate しない = DDR #70 の読み）／#69 = run を gate（本書 run 0）／#38 = UR15/UR15-B へ supersede／#45・#58 = 不触／#54・#57 = L 腕・mounting の事項／#48 = 別 chunk／#34・#35 = commit は `--no-verify`＋pathspec。FOUNDATIONAL 未解決で本 chunk を塞ぐ行 = 0。
-- **[RULE-CHECK] Tier 0-4**: Tier 0 prohibited.md — IK 以外の駆動 0・kinematic trick 0・制御方式変更 0・CLAUDE.md 不触・方針変更 0 ✓／Tier 1 新 file = Rs1 ① に名のある object ✓・新 CLI/Phase 0 ✓／Tier 2 skill 出力 = §8 ✓・pre-check = 実行済（cycle 1 BLOCK・cycle 2 §14 追記）✓／Tier 3 3 原則 = 迎合 0・対処療法 0（D4 は根本 = 側固定）✓／Tier 4 claim-check = 「在る/無い」主張は全て同 session の command 出力（closed query・`git show`・sha）に接地 ✓。
-- **[VERIFY] 5 体（事前）**: cycle 1 = **FAIL** @ `c7884ce0ff`（verdict file）。cycle 2 = 本 v2 に対し pre-check ＋ 5 体 → 結果は **§15** に追記。
-- **p4 消費基準 (a)-(h)（kickoff 09-13 節 2）への対応**: (a) 本書は bank commit の blob で読まれる（pin は第 2 信） (b) hash = sha256 ＋ commit (c) §0 不変（§0・§14 Tier 0） (d) 既存 class の派生（§0・§3） (e) 命令空間 = §9 (f) 鏡像参照値との整合 = §5 D1 行（R 式は非鏡像機の経路 = UR15-B では負の対照） (g) STOP = §11 (h) run 0 = 冒頭・§10。
+  `[L-TRIAGE RESULT] final_L: L3 / confidence: HIGH / evidence_summary: brief :59（制御設計 = L3＋設計ゲート＋pre-check）・新規 file >200 行 / required_gates: [DoD 宣言, pre-mortem(§11-12), handoff, 5 体事前 debate, /diffik-trajectory(§8), /pre-check, 層4, 層2 事後, 層5] / status: READY_FOR_CHECK`
+- **[DEFER-RECON]**: #68 = premise（Rs1 裁定済・spec 未反映は DoD/run を gate し設計を gate しない = DDR #70 の読み）／#69 = run を gate（本書 run 0）／#70 = **commit trailer A**（harness の trailer を認める）／#71 = 上記（node 化の境界 = Rs1）／#38 = UR15/UR15-B へ supersede／#45・#58 = 不触／#54・#57 = L 腕・mounting の事項／#48 = 別 chunk／#34・#35 = commit は `--no-verify`＋pathspec。FOUNDATIONAL 未解決で本 chunk を塞ぐ行 = 0。
+- **[RULE-CHECK] Tier 0-4**:
+  - Tier 0（prohibited.md・RS71 §0 `:22-29` の 5 件）: #1 DUAL-ARM `:22` — 両腕とも駆動・D4 は触れない ✓／#2 88 mm span・bases `:23` — 不触 ✓／#3 DiffIK-only `:24` — 既存 IK class のまま・JT/自前 kinematic 0 ✓／#4 gripper geometry LOCK `:25` — 不触 ✓／#5 no-kinematic-trick `:27-29` — 関節角直接書込 0・weld 0 ✓。制御方式変更 0・CLAUDE.md 不触・方針変更 0 ✓。
+  - Tier 1（hard stops 6 項）: 同一エラー 3 回 — **本 design の連続 = 2**（v1 BLOCK・v2 FAIL）・log の `consecutive_block: 4` は卓連続（07-21 v0.2/v0.3/v0.4 = 別 design ＋ 09-13 v1）⇒ 3 回規則は未発火だが **cycle 上限で escalate**（§15）✓／禁止 API・trick「今回だけ」= 0 ✓／patch の patch = 0（v3 は verdict 反映の書き直し）✓／根本原因不明の「動く」= 0 ✓／影響範囲 = wired 1 file・print 1 行・gate-inert（§6）✓／編集 file = 本書のみ（本 session で cat 済）✓。
+  - Tier 2: 新 file = Rs1 逐語に名のある object ✓・新 CLI/Phase 0 ✓・skill 出力 = §8 ✓・**pre-check = cycle 1 BLOCK（log 08:44:02）／cycle 2 WARN（HIGH 2・MEDIUM 9・log 追記）**・07-21 の 3 連続 BLOCK（v0.2/v0.3/v0.4・別 design）を開示 ✓。
+  - Tier 3（3 原則）: 迎合 0・対処療法 0（D4 は根本 = 側固定）・確証バイアス = 5 体が反証を探した ✓。
+  - Tier 4（claim-check）: 「在る/無い」主張の command 出力 = **verdict §5-E @ `5f0c2526c9`**（census・closed query・U1/U2 sha・擬ベクトル検査）✓。
+- **[VERIFY] 5 体（事前）**: cycle 1 = **FAIL** @ `c7884ce0ff`／cycle 2 = **FAIL（上限 2）** @ `5f0c2526c9` §5 → §15。
+- **層4 prior-art guard**（`check_thread_vault_prior_art.sh --fail-on-blocker "UR15-B" controller mirror AXFIX release_ctrl`・09-13 11:38）= **rc=2**・blocker = kickoff `:2234-2235`（m-p18-281/282 の訂正受入節）= **本設計が消費する prior art**（§5 D1・§9 に反映済）であって同じ失敗経路の再試行ではない ⇒ 記録して進む（verdict §5-D）。
+- **層2 事後**（L3）: v3 bank 後に committed blob を当卓が再読し verdict §5 の各 fix 列と突合（commit を名指し・§15 に追記）。**層5**（bank・3 視点）: cycle 2 の lens = 幾何/物理（CC4）・provenance（CC2）・SSOT（CC3）で充足と読む。D4 の 層5 は着地後に別途 owed。
+- **p4 消費基準 (a)-(h)（kickoff `:2286-2297`）への対応**: (a) 本書は bank commit の blob で読まれる (b) hash = sha256 ＋ commit (c) §0 5 件不変（Tier 0） (d) 既存 class の派生（§0・§3） (e) 命令空間 = §9 (f) **充足判定は p4**（§1・§5 D1） (g) STOP = §11 (h) run 0 = 冒頭・§10。
+- **pin の配達状態**: pin = p18 経由・herdr 0.9.0 で送信 tool 拒否中は HELD（§1453）・第 2 信の手送り可否 = Rs1（§1454 の語の射程は p18 の読み）。当卓の送信 = `herdr agent prompt`（09-13 08:25 実測で届いた）。
+
+## 15. cycle 2 の結果と処置（append-only）
+
+- **DECIDE = FAIL（cycle 2・上限 2 到達）** — verdict §5 @ `5f0c2526c9`。union CRITICAL 0・HIGH 9・MEDIUM 25・LOW 15 = 全受入・反駁 = 語法 4。⭐ HIGH 9 件は全て panel 発（当卓の自己検査 0 = 3 回目）。
+- **v3 = union 反映**（本 commit）。⛔ **未検証**。
+- **REVIEW → p4（p18 経由）に要るもの**: (1) v3 を第 3 cycle なしで消費するか／第 3 cycle（pre-check ＋ 5 体）を認可するか (2) Rs1 の柵 2 件を Rs1 へ: **R0 の計器 class**（KINONLY 級・認可 or R4 級へ格下げ）と **§1 の「作成」の問い**（(A)/(B)）(3) 回付 4 件: 監査の phantom `release_ctrl`（`_known` `:1614`・D4 外・pB 注意）／acceptance `:214` の逆述語（owner p0・DDR 項目）／reference JSON の repo 内 copy 提案／WIP の処遇（p18）。
+- 層2 事後の追記欄: （bank 後に当卓が記す）
