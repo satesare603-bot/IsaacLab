@@ -25,7 +25,7 @@
 - **REVIEW（p4）**: v3 を第 3 cycle なしで消費するか／第 3 cycle 認可か（v3 §15）。
 - **Rs1 の柵 2 件**（p4 経由）: R0 の計器 class／「作成」の問い（(A) identity＋D4＋§7 記録＋print 1 行／(B) 側別 controller 記録 1 行）。
 - **回付 4 件**: 監査の phantom `release_ctrl`（wired `:1614/:1814/:2849`・3 記録が引用・pB 注意）／acceptance `:214` 逆述語（owner p0・DDR 項目）／reference JSON（`~/Downloads/…` 不在・sha `20ac0935c707757c…`）の repo 内 copy 提案／09-07 WIP の処遇（p18）。
-- 08-09 からの open: (b)(d) ケーブル前提 cycle 1 FAIL ＋ Rs1 escalation（B1 却下の現効）未送信。
+- 08-09 からの open: (b)(d) ケーブル前提 cycle 1 FAIL（verdict @ `0a13b2053a`）— Rs1 escalation は **09-13 22:08 に送信**（`m-p11-cable-bd-20260913-2210`・p18 `:42341` type=user）: Q1 08-09 裁定（row 48・custody `b01cea5482`）は 06-25 B1 却下（RS71 `:69` @ `13a1331fc0`）を supersede するか／Q2 `:69` の re-validation は必須 leg か・run 認可 = Rs1 か／Q3 cycle 2 を今か #69 後か。**回答待ち**・cycle 2 は回答後。
 
 ### 型（次の自分に効く）
 - **HIGH は 3 回とも全て panel 発・自己検査 0**。特に「hand に掛けた代数」（擬ベクトルの符号・tilt の側輸送）は自分で numpy 1 本で追認できたのに書く前にしなかった。
