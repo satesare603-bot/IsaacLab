@@ -1,0 +1,370 @@
+{
+  "native_sha256": "070466bccca1516133de7a093b268d64faa114e96c680529a856ca28af3875cb",
+  "source_mesh_payload_sha256": "9414123be71635c27e419bc73a90f92517de453967d525d23e9387e61d2eb6e4",
+  "native_readback_identical": true,
+  "readback_fields": [
+    "world matrices",
+    "vertex SHA",
+    "face SHA",
+    "mesh counts",
+    "visibility"
+  ],
+  "mesh_counts": {
+    "D00_clear": 18,
+    "D00_early": 18,
+    "D00_near": 18,
+    "D00_open": 18,
+    "D30_clear": 18,
+    "D30_early": 18,
+    "D30_near": 18,
+    "D30_open": 18,
+    "D60_clear": 18,
+    "D60_early": 18,
+    "D60_near": 18,
+    "D60_open": 18
+  },
+  "surface_observations": {
+    "D00_clear": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D00_early": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D00_near": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D00_open": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D30_clear": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D30_early": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D30_near": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D30_open": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D60_clear": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D60_early": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D60_near": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    },
+    "D60_open": {
+      "hand_vs_reference_context": {
+        "object_pairs_considered": 56,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "carrier_vs_hardware_including_mounts": {
+        "object_pairs_considered": 20,
+        "surface_overlap_pairs": [
+          {
+            "first": "left_left_carrier",
+            "second": "hardware_left_left_inner_finger_0",
+            "triangle_pairs": 290
+          },
+          {
+            "first": "left_right_carrier",
+            "second": "hardware_left_right_inner_finger_0",
+            "triangle_pairs": 290
+          }
+        ],
+        "additional_object_overlap_pairs_vs_D00": []
+      },
+      "left_vs_right_inserts": {
+        "object_pairs_considered": 4,
+        "surface_overlap_pairs": [],
+        "additional_object_overlap_pairs_vs_D00": []
+      }
+    }
+  },
+  "method": "Blender BVHTree triangle surfaces, epsilon=0; AABB rejection; same groups for D00/D30/D60",
+  "scope": "Three placements and four discrete poses; includes mounting pairs rather than hiding them",
+  "limitations": "No signed volume, solid containment, full swept motion, camera, arm or physical validity verdict",
+  "comparison_cylinders": "Shown in HTML only; absent from native and GLB",
+  "video_created": false,
+  "physical_acceptance_verdict": null
+}

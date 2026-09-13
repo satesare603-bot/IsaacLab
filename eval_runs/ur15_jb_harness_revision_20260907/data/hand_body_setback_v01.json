@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "source_mesh_sha256": "22e4d62739debfe3c20d59d8223ea6fa6703d50ebd425d54bb9def403eaf60a9",
+  "source_candidate": "EDGE",
+  "offset_direction_world": [0, 1, 0],
+  "setbacks_m": {"D00": 0.0, "D30": 0.030, "D60": 0.060},
+  "carrier_front_y_m": 0.012,
+  "carrier_rear_y_m": 0.016,
+  "carrier_rear_vertex_selection_y_m": 0.014,
+  "tool_lower_z_above_seat_m": [0.0038, 0.0538],
+  "tool_upper_z_above_seat_m": [0.0538, 0.1888769757245636],
+  "illustrative_tip_diameter_m": 0.012,
+  "illustrative_upper_diameter_m": 0.040,
+  "default_candidate": "D30",
+  "scope": "Static comparison requested by the user. Translate original hand hardware and extend the replaceable carrier while preserving the terminal contact location. Offsets and tool cylinders are comparison dimensions, not selected equipment or acceptance criteria.",
+  "official_reference": {
+    "url": "https://assets.robotiq.com/website-assets/support_documents/document/online/2F-85_2F-140_TM_InstructionManual_HTML5_20190503.zip/2F-85_2F-140_TM_InstructionManual_HTML5/Content/6.%20Specifications.htm",
+    "checked_on": "2026-09-13",
+    "sections": ["6.1.2 Fingertips", "6.2.1 Payload and force", "6.2.4 Moment and force limits"],
+    "application": "Preserve the permanent distal phalanx; change only the attached custom carrier. Catalog dimensional limits refer to the fingertip base and are not an approved body setback. Standard-tip force values are not adopted for the extended tips."
+  },
+  "selected_setback_m": null,
+  "actual_tool_dimensions_m": null,
+  "actual_terminal_part_number": null,
+  "finger_material": null,
+  "mounting_screws": null,
+  "physical_acceptance_verdict": null
+}

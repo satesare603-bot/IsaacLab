@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-09-13T21:11:45.882126+09:00",
+  "source_commit_before_work": "bf87bb71e7829ab8faebfb037970663e779ebb39",
+  "source_sha256": "22e4d62739debfe3c20d59d8223ea6fa6703d50ebd425d54bb9def403eaf60a9",
+  "scripts_sha256": {
+    "build_hand_body_setback_v01.py": "36f780dd3c7253e162803d3d36b690d5d240ae7c2f41c717e44a05936f371fbe",
+    "build_hand_fingertip_concepts_v01.py": "532b03f68bfdf49c46ae3f33155b8757a8e93549773390a85a27e7b52066bf5c",
+    "hand_body_setback_viewer_v01.html": "4bdae763124fe5bdf8c94ecb57c1a444eaf7d43e4abb712f8a54bfff23951bce",
+    "probe_hand_tool_access_v01.py": "55456e6d55f84931bcc3f502e77372414a6efa2578e27970d5620f176c53417c",
+    "render_hand_fingertip_concepts_v01.py": "d2b93084db702202daf7a94209d3140657c3db1ac1d5e06462daa0618b4067d1",
+    "save_hand_body_setback_v01.py": "a2b1dd1b227c30e0f7e6da312b310163f684f5c0c9e186c6260319a30cee22aa"
+  },
+  "executed_code_note": "Only string-literal line wrapping changed in the native saver after execution; no AST/measurement change.",
+  "surface_pair_summary": {
+    "hand_vs_reference_context": {
+      "pairs_considered": 672,
+      "surface_overlap_object_pairs": 0,
+      "additional_pairs_vs_D00": 0
+    },
+    "carrier_vs_hardware_including_mounts": {
+      "pairs_considered": 240,
+      "surface_overlap_object_pairs": 24,
+      "additional_pairs_vs_D00": 0
+    },
+    "left_vs_right_inserts": {
+      "pairs_considered": 48,
+      "surface_overlap_object_pairs": 0,
+      "additional_pairs_vs_D00": 0
+    }
+  },
+  "official_source": {
+    "url": "https://assets.robotiq.com/website-assets/support_documents/document/online/2F-85_2F-140_TM_InstructionManual_HTML5_20190503.zip/2F-85_2F-140_TM_InstructionManual_HTML5/Content/6.%20Specifications.htm",
+    "checked_on": "2026-09-13",
+    "sections": [
+      "6.1.2 Fingertips",
+      "6.2.1 Payload and force",
+      "6.2.4 Moment and force limits"
+    ],
+    "application": "Preserve the permanent distal phalanx; change only the attached custom carrier. Catalog dimensional limits refer to the fingertip base and are not an approved body setback. Standard-tip force values are not adopted for the extended tips."
+  },
+  "physical_acceptance_verdict": null
+}

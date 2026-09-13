@@ -81,3 +81,12 @@ numbers unknown until their basis and the scope of the product change are set.
   The observation does not select tool dimensions, redesign the hand, or
   establish physical validity. Preserve the source mesh and saved poses when
   reproducing it; production arm motion and video remain paused.
+- The user then requested moving the black hardware away from the terminal to
+  maximize tool space. `analysis/hand_body_setback_v01.md` compares 30/60 mm
+  rearward body offsets against the original EDGE sample. The original hardware
+  geometry and four joint states are retained; the blue carriers extend while
+  the terminal-side contact contours retain their world positions. Offsets,
+  beam sections and tool cylinders are comparison values, not selected hardware.
+  Upper tool space and lower fingertip space are separate observations. Existing
+  carrier/mount surface overlaps remain recorded; mounting details, stiffness
+  and force capability are unresolved. No upper retainer or arm motion is added.
