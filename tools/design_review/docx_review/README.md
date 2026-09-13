@@ -32,6 +32,8 @@ python3 tools/design_review/docx_review/run_selfcheck.py
 {"versions": [{"version": "v1", "sha256_prefix": "0123456789abcdef", "size": 12345}]}
 ```
 
+`sha256_prefix` の代わりに全64桁の `sha256` キーでも照合できます。
+
 ## レビュー手順への対応
 
 1. 同一ファイルの検出 → `docx_compare.py` の SHA-256（自動）

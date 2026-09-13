@@ -84,7 +84,8 @@ def load_known(path: Path | None) -> list[dict[str, Any]]:
 
 def match_known(sha: str, known: list[dict[str, Any]]) -> dict[str, Any] | None:
     for entry in known:
-        prefix = str(entry.get("sha256_prefix", "")).lower()
+        # accept either a leading-hex prefix ("sha256_prefix") or a full digest ("sha256" / "sha256_full")
+        prefix = str(entry.get("sha256_prefix") or entry.get("sha256") or entry.get("sha256_full") or "").lower()
         if prefix and sha.lower().startswith(prefix):
             return entry
     return None
