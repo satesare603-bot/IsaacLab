@@ -16,7 +16,8 @@ Procedure (send):
   cannot be excluded by the environment: they run this tool only as HUB_SEND_READONLY=1 ... --dry_run (nothing
   is sent, pressed or written in that mode). Every row records hub_session_id and child_session.
 - Roster = non-comment lines of scripts/validations/nest_role_labels.txt read at run time, minus RETIRED.
-  Resolution = `herdr agent list`, w2 agents only, name "w2:pN ROLE" -> exact match -> exactly one live agent.
+  Resolution = `herdr pane list`, w2 panes that carry an agent kind and a live agent session, label "w2:pN ROLE"
+  (a pane attribute under herdr 0.9.0; `agent list` carries no name) -> exact match -> exactly one live agent.
   An agent whose `agent` kind is not claude is refused (refused(agent_type_not_banked)): no delivery table is
   banked for other kinds (the node's codex exclusion), so the tool does not send to them (fail-closed; stricter
   than the spec's UNKNOWN(table-not-banked)).
@@ -30,7 +31,7 @@ Procedure (send):
   text once (head line + body + footer), write bodies/m-p18-N.txt, send the identical bytes to each member.
   --id completes a held fan-out: the bytes are read back from bodies/m-p18-N.txt (never re-composed), the members
   must belong to the recorded fan-out, and a --body_file whose body differs from the stored body is refused.
-  Only members never handed to `herdr agent send` (a pre-send held row, or HELD(fanout_stopped)) are sent; every
+  Only members never handed to `herdr pane send-text` (a pre-send held row, or HELD(fanout_stopped)) are sent; every
   other member is skipped with skipped(<state>) before any read, so one id never reaches a queue twice.
 - Pre-send decision (fail-closed): HELD when agent_status is not idle/done/working; when a herdr dialog marker is
   anywhere in the viewport (over-HELD by design, never under-HELD); when there is no composer line (prompt glyph +
@@ -40,14 +41,15 @@ Procedure (send):
   A folded paste hides its identity: our own un-pressed text in a composer reads as HELD(paste_in_composer), not
   as composer_holds_own_message (that state needs an unfolded head line); correlate through the pane's held rows.
   Nothing is ever sent before the whole fan-out has been decided.
-- Post-send gate: after `herdr agent send` the composer is re-read (up to 6 x 0.25 s). The keypress is pressed only
+- Post-send gate: after `herdr pane send-text` the composer is re-read (up to 6 x 0.25 s). The keypress is pressed only
   when the composer line starts with the head line, or is exactly one folded-paste marker "[Pasted text #N +K lines]"
   whose K+1 equals the line count of the sent text (Claude Code folds a multi-line paste; measured 2026-09-06 on
   m-p18-323, n=1; the marker text is stored in the row as landed_as). A foreign paste of the same line count
   arriving between the pre-send read and the post-send read is the documented residual; a fold whose count
   differs from ours holds as HELD(paste_count_mismatch). Before the keypress the agent status is re-read (one
-  `agent list`, ~0.35 s; a flip inside the last ~0.8 s is invisible); a working<->idle flip, or a status outside
-  idle/done/working, holds (HELD(status_changed)) instead of pressing. Return codes of `agent send` and
+  `pane list`, <10 ms on herdr 0.9.0; the blind window is the status-detection lag of herdr plus the send-keys
+  launch, ~0.45-0.5 s measured 2026-09-13); a working<->idle flip, or a status outside idle/done/working, holds
+  (HELD(status_changed)) instead of pressing. Return codes of `pane send-text` and
   `send-keys` are stored (send_rc, keypress_rc); a refused keypress holds (HELD(keypress_refused)) with via none.
   A post-send HELD stops the fan-out: members not yet sent get HELD(fanout_stopped) rows. Any exception after the
   text was placed still appends the row it has built (HELD(error:...) before the keypress, UNKNOWN(error:...)
@@ -177,10 +179,14 @@ def herdr_json(argv: list[str]) -> dict | None:
 
 
 def agent_list() -> list[dict]:
-    doc = herdr_json(["agent", "list"])
+    doc = herdr_json(["pane", "list"])
     if not doc:
-        raise SystemExit("refused: herdr agent list did not return JSON")
-    return [a for a in doc["result"]["agents"] if str(a.get("pane_id", "")).startswith("w2:")]
+        raise SystemExit("refused: herdr pane list did not return JSON")
+    return [
+        p
+        for p in doc["result"]["panes"]
+        if str(p.get("pane_id", "")).startswith("w2:") and p.get("agent") and p.get("agent_session")
+    ]
 
 
 def guard(agents: list[dict]) -> str:
@@ -199,7 +205,7 @@ def roster() -> set[str]:
 
 
 def live_label(agent: dict) -> str:
-    name = str(agent.get("name", ""))
+    name = str(agent.get("label", ""))  # herdr 0.9.0: the pane label "w2:pN ROLE" (agent list has no name)
     label = name.split(" ", 1)[1] if " " in name else ""
     return label[len("T-ROOT-") :] if label.startswith("T-ROOT-") else label
 
@@ -246,15 +252,27 @@ def resolve_pane(pane: str, to: str, agents: list[dict], control: bool) -> tuple
     return label, check_kind(forced[0])
 
 
+def viewport_rows(pane: str) -> int:
+    """The viewport height of a pane from `herdr pane list` (scroll.viewport_rows); 0 when unknown."""
+    try:
+        hits = [p for p in agent_list() if p.get("pane_id") == pane]
+    except SystemExit:
+        return 0
+    return int((hits[0].get("scroll") or {}).get("viewport_rows") or 0) if hits else 0
+
+
 def read_view(pane: str) -> dict:
-    doc = herdr_json(["agent", "read", pane, "--source", "recent-unwrapped", "--format", "ansi"])
-    if not doc or "result" not in doc or "read" not in doc["result"] or "text" not in doc["result"]["read"]:
+    rows = viewport_rows(pane)  # 0.9.0 default read = 80 rows; --lines <viewport_rows> covers the whole viewport
+    argv = ["herdr", "agent", "read", pane, "--source", "recent-unwrapped", "--format", "ansi"]
+    out, rc = run_rc(argv + (["--lines", str(rows)] if rows else []))
+    if rc != 0 or not out.strip():  # raw ANSI text on stdout (keeps the NBSP; --format text drops it); rc=1 = error
         return {"error": "read_failed"}
-    rd = doc["result"]["read"]
-    raw_lines = rd["text"].split("\n")
+    raw_lines = out.split("\n")
     plain = [ANSI_RE.sub("", ln).rstrip("\r") for ln in raw_lines]
     composer_idx = [i for i, ln in enumerate(plain) if ln.startswith(PROMPT)]
-    view = {"truncated": bool(rd.get("truncated")), "plain": plain, "raw": raw_lines, "composer_idx": composer_idx}
+    # 0.9.0 has no truncated flag: the read is sized by the viewport rows instead (134 of 135 rows on w2:p12, 66 of 67
+    # on w2:p6, 2026-09-13); an unknown row count is treated as a truncated view (HELD(viewport_truncated)).
+    view = {"truncated": rows == 0, "plain": plain, "raw": raw_lines, "composer_idx": composer_idx}
     if len(composer_idx) == 1:
         i = composer_idx[0]
         view["composer_plain"] = plain[i][len(PROMPT) :].strip()
@@ -724,7 +742,7 @@ def send_one(mid: str, role: str, a: dict, text: str, head: str, sha: str, base:
         row["state"] = "dry_run(would_send)"
         append_row(row)
         return 0
-    _, row["send_rc"] = run_rc(["herdr", "agent", "send", pane, text])
+    _, row["send_rc"] = run_rc(["herdr", "pane", "send-text", pane, text])
     try:
         return _after_send(mid, a, text, head, row, queue)
     except BaseException as exc:
