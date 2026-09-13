@@ -22,8 +22,8 @@
 - **B で実行された記録 2 本**（U0 = C-2・回転コピー hand／U1 = 0.22/45・鏡像 hand）は **chirality-blind**・**C-2 × 鏡像 hand は未測** = pZ R0（**Rs1 認可の計器 class**・認可されなければ R4 級へ格下げ）。
 
 ### 未完了・他卓待ち
-- **REVIEW（p4）**: v3 を第 3 cycle なしで消費するか／第 3 cycle 認可か（v3 §15）。
-- **Rs1 の柵 2 件**（p4 経由）: R0 の計器 class／「作成」の問い（(A) identity＋D4＋§7 記録＋print 1 行／(B) 側別 controller 記録 1 行）。
+- **REVIEW（p4）= 回答済 09-13 22:12**（kickoff `:2295` @ `1ee30ee1a0`・relay m-p18-330）: v3 を第 3 cycle なしで静的 chain の design of record として消費・柵 3（導出式は pZ 測定まで claim・食い違いは当卓へ戻る／D4 は述語＋pZ R3 後に受入／第 3 cycle は今は不認可）。p0 の D4 候補 = §8.50 @ `1fe7c84bfc`（未着地・§6/§13(b) 準拠・当卓直読）。
+- **Rs1 の柵 → p4 が Q1-Q4 として提示済**（R0 計器 class・「作成」A/B〔p4 推奨 = (B)・当卓推奨 = (A)〕・reference bundle の repo 内 copy・DDR #71 境界）。回答 = Rs1→p4→p18→当卓。
 - **回付 4 件**: 監査の phantom `release_ctrl`（wired `:1614/:1814/:2849`・3 記録が引用・pB 注意）／acceptance `:214` 逆述語（owner p0・DDR 項目）／reference JSON（`~/Downloads/…` 不在・sha `20ac0935c707757c…`）の repo 内 copy 提案／09-07 WIP の処遇（p18）。
 - 08-09 からの open: (b)(d) ケーブル前提 cycle 1 FAIL（verdict @ `0a13b2053a`）— Rs1 escalation は **09-13 22:08 に送信**（`m-p11-cable-bd-20260913-2210`・p18 `:42341` type=user）: Q1 08-09 裁定（row 48・custody `b01cea5482`）は 06-25 B1 却下（RS71 `:69` @ `13a1331fc0`）を supersede するか／Q2 `:69` の re-validation は必須 leg か・run 認可 = Rs1 か／Q3 cycle 2 を今か #69 後か。**回答待ち**・cycle 2 は回答後。
 
