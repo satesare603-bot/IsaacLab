@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "source_mesh_sha256": "22e4d62739debfe3c20d59d8223ea6fa6703d50ebd425d54bb9def403eaf60a9",
+  "source_mesh_file": "hand_terminal_meshes_v01.json",
+  "source_config_file": "hand_terminal_concepts_v01.json",
+  "source_reference_file": "hand_terminal_reference_sources_v01.json",
+  "axis_xy_m": [0.0, 0.0],
+  "profile_bin_height_m": 0.002,
+  "comparison_diameters_m": [0.008, 0.012, 0.016, 0.024, 0.032],
+  "default_diameter_m": 0.012,
+  "scope": "Existing isolated EDGE/GUIDE meshes; unchanged source geometry and four saved static poses. Height-resolved distance from the tool axis to clipped triangle surfaces, not a physical acceptance verdict.",
+  "excluded_categories": ["target", "guide"],
+  "exclusions_reason": "The terminal, wire, sleeve, coupon and illustrative cylinder are context. Intended fastener engagement, actual hollow socket, actuator body, wrist camera, arm, case and the second hand/tool are not evaluated.",
+  "actual_socket_part_number": null,
+  "actual_tool_body_dimensions_m": null,
+  "actual_terminal_part_number": null,
+  "physical_acceptance_verdict": null
+}

@@ -73,3 +73,11 @@ numbers unknown until their basis and the scope of the product change are set.
   separately supplied support bodies may be mounted at A. Two fingers remain
   the baseline comparison. Contact dimensions, force and installed hand counts
   are unselected, including the three targets without photo-location annotations.
+- `analysis/hand_tool_access_v01.md` observes the unchanged isolated EDGE/GUIDE
+  meshes. The 50 mm illustrative tool band has a different result from the
+  extended band: in the near pose, the tool axis intersects a gripper-body
+  surface at 120.577 mm above the sample connection plane. Do not extrapolate
+  the short-band radial difference to a complete socket or fastening unit.
+  The observation does not select tool dimensions, redesign the hand, or
+  establish physical validity. Preserve the source mesh and saved poses when
+  reproducing it; production arm motion and video remain paused.

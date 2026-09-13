@@ -1,0 +1,15 @@
+{
+  "recorded_at": "2026-09-13T20:23:04.662433+09:00",
+  "executed_numeric_script_sha256": "479e05156281959f273aa50e4497f712c545bec5e554b9c47dec689ce84310b7",
+  "delivered_script_sha256": "55456e6d55f84931bcc3f502e77372414a6efa2578e27970d5620f176c53417c",
+  "functions_changed_after_measurement": [
+    "_write_review"
+  ],
+  "change_reason": "Append the observed extended-band result to prose. Numerical functions and inputs unchanged.",
+  "numeric_functions_ast_unchanged": true,
+  "template_sha256": "de9aa68270ad3cb8f8a8a498ab09b2d98922ebac820440e8a125f33c0a878b3e",
+  "page_sha256": "b4e189ff5ad974b879d77aaf4909a2f0605a0078b4fceafef3fb73b04339893f",
+  "observation_sha256": "04b0689feb77bda39d66c0daeb6df78d068ff43b8af986998416cbac8ddd468e",
+  "source_commit_before_work": "e2196ebc6d534ba00eac2c5b3950c88596b8f9c0",
+  "physical_acceptance_verdict": null
+}
